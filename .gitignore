@@ -4,3 +4,4 @@ dist
 _client/
 .astro/
 spot/out/
+spot/assets/raw/

@@ -28,7 +28,7 @@ page.on('console', (m) => m.type() === 'error' && console.log('CONSOLE', m.text(
 await page.goto(pathToFileURL(path.join(dir, 'spot.html')).href, { waitUntil: 'load' });
 const logo = fs.readFileSync(path.join(root, 'public', 'brand', 'full.svg'), 'utf8');
 await page.evaluate(async (logo) => {
-  await Promise.all(['400 40px IS', 'italic 400 40px IS', '800 40px IN', '600 40px IN'].map((f) => document.fonts.load(f)));
+  await Promise.all(['640 40px IT', '600 40px IT', '400 40px IT', 'italic 400 40px PF'].map((f) => document.fonts.load(f)));
   window.build(logo);
 }, logo);
 

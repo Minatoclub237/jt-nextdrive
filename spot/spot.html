@@ -4,232 +4,231 @@
 <meta charset="utf-8" />
 <title>Next Drive — spot 20 s</title>
 <style>
-@font-face { font-family: IS; src: url(../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2); }
-@font-face { font-family: IS; font-style: italic; src: url(../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2); }
-@font-face { font-family: IN; font-weight: 100 900; src: url(../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2); }
-:root { --cr: #F3F1ED; --ink: #0B0B0C; --br: #8C3B3B; --dp: #641413; --ac: #C4474D; --gd: #E7B04B; --mu: #A19C97; }
+@font-face { font-family: IT; font-weight: 100 900; src: url(../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2); }
+@font-face { font-family: PF; font-style: italic; font-weight: 400; src: url(../node_modules/@fontsource/playfair-display/files/playfair-display-latin-400-italic.woff2); }
+:root { --ink: #141414; --gr: #96938E; --tx: #3A3835; --br: #8C3B3B; --cr: #F3F1ED; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100%; height: 100%; overflow: hidden; background: var(--cr); }
-body { font-family: IN, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #E7E6E3; }
+body { font-family: IT, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
 #cam { position: absolute; inset: 0; }
-#bg { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 38%, #F7F5F2 0%, var(--cr) 55%, #E4DFD9 100%); }
-.scene { position: absolute; inset: 0; perspective: 140vmin; }
+#studio { position: absolute; inset: 0; background: radial-gradient(130% 95% at 50% 34%, #F6F5F3 0%, #E8E7E4 52%, #D3D1CD 100%); }
+#dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(20,20,20,.22) .16vmin, transparent .19vmin); background-size: 4.2vmin 4.2vmin; background-position: center; -webkit-mask-image: radial-gradient(60% 55% at 50% 50%, #000 0%, transparent 100%); }
+#curve { position: absolute; inset: 0; width: 100%; height: 100%; }
+#curve path { fill: none; stroke: rgba(20,20,20,.28); stroke-width: 1.4; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.scene { position: absolute; inset: 0; perspective: 160vmin; }
 .c { position: absolute; left: 50%; top: 50%; white-space: nowrap; }
-.serif { font-family: IS, serif; font-weight: 400; letter-spacing: -.01em; }
-.it { font-style: italic; }
-.m { display: inline-block; overflow: hidden; vertical-align: bottom; padding: .02em .05em .1em; margin: 0 -.05em; }
-.w { display: inline-block; will-change: transform; }
-.lab { font-size: 2.5vmin; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--mu); text-align: center; line-height: 1.7; }
-.ttl { display: flex; flex-direction: column; align-items: center; line-height: .98; text-align: center; }
-.ttl > span:first-child { font-size: 10vmin; font-weight: 800; letter-spacing: -.035em; }
-.ttl > span:last-child { font-size: 12.5vmin; color: var(--br); }
-.num { font-family: IS, serif; font-size: 56vmin; line-height: 1; color: transparent; -webkit-text-stroke: .22vmin rgba(140, 59, 59, .38); }
-.card { background: #fff; border-radius: 2.4vmin; box-shadow: 0 2.6vmin 6vmin rgba(11, 11, 12, .12), 0 .3vmin .8vmin rgba(11, 11, 12, .06); }
+.m { display: inline-block; overflow: hidden; vertical-align: bottom; padding: .04em .06em .14em; margin: 0 -.06em; }
+.w { display: inline-block; }
+.g { font-family: IT; font-weight: 640; letter-spacing: -.058em; }
+.s { font-family: PF; font-style: italic; font-weight: 400; letter-spacing: -.012em; color: var(--br); }
+.kick { font-size: 1.75vmin; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; color: var(--gr); }
+.ttl { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: .96; }
+.ttl .g { font-size: 9vmin; }
+.ttl .s { font-size: 9.6vmin; margin-top: -.6vmin; }
+.para { width: 44vmin; white-space: normal; font-size: 1.95vmin; line-height: 1.5; color: var(--tx); text-align: justify; text-align-last: center; }
+.ui { background: rgba(255,255,255,.94); border-radius: 2.2vmin; box-shadow: 0 3vmin 7vmin rgba(20,20,20,.12), 0 .3vmin 1vmin rgba(20,20,20,.06); }
+.car { position: absolute; left: 50%; top: 50%; }
+.car img { display: block; width: 100%; filter: saturate(.82) contrast(1.04); }
+.car::after { content: ''; position: absolute; left: 6%; right: 6%; bottom: -3%; height: 12%; z-index: -1; background: radial-gradient(50% 50% at 50% 50%, rgba(10,10,10,.42), transparent 70%); filter: blur(1vmin); }
+.full { position: absolute; inset: -4%; background-size: cover; background-position: center; }
 
 /* 1. accroche */
 .hl { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: .95; }
-.hl .r1 { font-size: 16vmin; font-weight: 800; letter-spacing: -.045em; }
-.hl .r2 { font-size: 18vmin; color: var(--br); }
-.hl .r3 { margin-top: 3vmin; font-size: 4.8vmin; font-weight: 500; color: #6d6863; }
-.note { width: 52vmin; display: grid; grid-template-columns: 6.4vmin 1fr auto; gap: 2.2vmin; align-items: center; padding: 2.2vmin 2.6vmin; white-space: normal; }
-.note i { width: 6.4vmin; height: 6.4vmin; border-radius: 50%; background: var(--dp); color: var(--cr); display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 2.8vmin; }
-.note b { display: block; font-size: 2.6vmin; font-weight: 700; }
-.note span { display: block; font-size: 2.9vmin; color: #3b3835; margin-top: .3vmin; }
-.note time { align-self: start; font-size: 2.2vmin; color: var(--mu); }
-.stats { display: flex; flex-direction: column; gap: 1vmin; }
-.st { position: relative; display: flex; align-items: baseline; gap: 3vmin; }
-.st b { font-size: 21vmin; font-weight: 800; letter-spacing: -.05em; line-height: .9; font-variant-numeric: tabular-nums; min-width: 26vmin; text-align: right; }
-.st span { font-size: 10vmin; color: var(--br); }
-.strike { position: absolute; left: -3vmin; right: -3vmin; top: 52%; height: 1.5vmin; background: var(--ac); transform-origin: 0 50%; }
+.hl .g { font-size: 10.6vmin; }
+.hl .s { font-size: 9.4vmin; }
+.note { width: 46vmin; display: grid; grid-template-columns: 5.4vmin 1fr auto; gap: 1.8vmin; align-items: center; padding: 1.8vmin 2.2vmin; white-space: normal; }
+.note i { width: 5.4vmin; height: 5.4vmin; border-radius: 50%; background: #E2E0DC; display: grid; place-items: center; font-style: normal; font-weight: 600; font-size: 2.2vmin; color: var(--tx); }
+.note b { display: block; font-size: 2.1vmin; font-weight: 640; letter-spacing: -.02em; }
+.note span { display: block; font-size: 2.4vmin; color: var(--tx); letter-spacing: -.015em; }
+.note time { align-self: start; font-size: 1.8vmin; color: var(--gr); }
+#board { width: 62vmin; padding: 3.2vmin 3.6vmin 3.4vmin; }
+#board header { display: flex; justify-content: space-between; font-size: 1.8vmin; color: var(--gr); letter-spacing: .02em; }
+#board svg { display: block; width: 100%; height: 15vmin; margin: 2vmin 0 2.4vmin; overflow: visible; }
+#chart { fill: none; stroke: var(--br); stroke-width: 2.4; stroke-dasharray: 1; stroke-dashoffset: 1; stroke-linejoin: round; }
+#area { fill: url(#fade); }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(20,20,20,.1); }
+.kpi { padding-top: 2vmin; }
+.kpi b { display: block; font-size: 7.4vmin; font-weight: 640; letter-spacing: -.06em; line-height: 1; font-variant-numeric: tabular-nums; }
+.kpi span { font-size: 2vmin; color: var(--gr); }
+.kpi.zero b { color: var(--br); }
+.kpi.zero span { font-family: PF; font-style: italic; font-size: 2.6vmin; color: var(--br); }
 
-/* 2. question sur la diagonale */
-#slash { position: absolute; left: 50%; top: 50%; background: var(--br); }
-.q { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--cr); line-height: 1; }
-.q .r1 { font-size: 8.4vmin; font-weight: 800; letter-spacing: -.035em; }
-.q .r2 { font-size: 10.5vmin; }
+/* 2. plein cadre */
+#s2 { background: #0c0c0c; overflow: hidden; }
+#phare { background-image: url(assets/phare.jpg); filter: grayscale(1) contrast(1.3) brightness(1.12); }
+#sweep { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.16) 50%, transparent 65%); }
+#s2 .shade { position: absolute; inset: 0; background: radial-gradient(90% 70% at 50% 50%, rgba(0,0,0,.05), rgba(0,0,0,.5)); }
+.q { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--cr); line-height: .98; }
+.q .g { font-size: 8.6vmin; }
+.q .s { font-size: 10vmin; color: var(--cr); }
 
 /* 3. logo */
-.disc { position: absolute; inset: 0; }
-#s3 .disc { background: radial-gradient(120% 90% at 50% 38%, #F7F5F2 0%, var(--cr) 55%, #E4DFD9 100%); }
-#logoWrap { width: 74vmin; }
-#logoWrap > div { position: absolute; inset: 0; }
-#logoA svg, #logoB svg { display: block; width: 100%; height: auto; }
-#logoA { position: relative !important; }
-#logoA path { fill: rgba(100, 20, 19, 0); stroke: var(--dp); stroke-width: 6; stroke-dasharray: 1; stroke-dashoffset: 1; }
-#logoB path { fill: var(--ac); }
+#logo { width: 66vmin; }
+#logo svg, #mark svg { display: block; width: 100%; height: auto; }
+#logo path, #mark path { fill: var(--ink); }
+.bar { display: flex; align-items: flex-end; gap: .36vmin; height: 5vmin; justify-content: center; }
+.bar i { display: block; height: 100%; background: var(--ink); }
+.sig { display: flex; flex-direction: column; align-items: center; gap: 1.2vmin; }
 
 /* étapes */
-.tag { width: 52vmin; padding: 3.4vmin 4vmin 3.2vmin 9vmin; overflow: hidden; }
-.tag::before { content: ''; position: absolute; left: 3.2vmin; top: 50%; width: 2.6vmin; height: 2.6vmin; margin-top: -1.3vmin; border-radius: 50%; background: var(--cr); box-shadow: inset 0 .2vmin .5vmin rgba(0,0,0,.2); }
-.tag small { display: block; font-size: 2.2vmin; font-weight: 600; letter-spacing: .22em; color: var(--mu); }
-.tag strong { display: block; font-size: 9.4vmin; font-weight: 800; letter-spacing: -.045em; font-variant-numeric: tabular-nums; line-height: 1.05; }
-.tag em { display: block; font-family: IS, serif; font-size: 3.6vmin; color: var(--br); }
-.scan { position: absolute; top: 0; bottom: 0; left: 0; width: .5vmin; background: var(--ac); box-shadow: 0 0 3vmin 1vmin rgba(196, 71, 77, .45); }
-.vf { width: 66vmin; height: 36vmin; }
-.vf i { position: absolute; width: 6vmin; height: 6vmin; border: 0 solid var(--br); }
-.vf i:nth-child(1) { left: 0; top: 0; border-width: .6vmin 0 0 .6vmin; }
-.vf i:nth-child(2) { right: 0; top: 0; border-width: .6vmin .6vmin 0 0; }
-.vf i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 .6vmin .6vmin; }
-.vf i:nth-child(4) { right: 0; bottom: 0; border-width: 0 .6vmin .6vmin 0; }
-.vf u { position: absolute; font-size: 2vmin; font-weight: 600; letter-spacing: .14em; text-decoration: none; color: var(--mu); }
-.vf .rec { position: absolute; left: 50%; top: 2.2vmin; width: 1.6vmin; height: 1.6vmin; margin-left: -.8vmin; border-radius: 50%; background: var(--ac); }
-#carS { position: absolute; left: 50%; top: 54%; width: 50vmin; margin-left: -25vmin; margin-top: -9vmin; filter: drop-shadow(0 2vmin 1.6vmin rgba(11,11,12,.25)); }
-.pol { width: 40vmin; padding: 1.6vmin 1.6vmin 6vmin; }
-.pol div { height: 22vmin; background: var(--dp); display: grid; place-items: center; }
-.pol svg { width: 70%; }
-#road { position: absolute; left: 0; right: 0; top: 50%; height: 21vmin; margin-top: -4.5vmin; background: #1b1a1a; transform-origin: 50% 50%; overflow: hidden; }
-#dash { position: absolute; left: 0; width: 400%; top: 50%; height: .9vmin; margin-top: -.45vmin; background: repeating-linear-gradient(90deg, var(--cr) 0 9vmin, transparent 9vmin 18vmin); opacity: .85; }
-#road b { position: absolute; top: 0; bottom: 0; width: 100%; border-top: .5vmin solid rgba(243,241,237,.5); border-bottom: .5vmin solid rgba(243,241,237,.5); }
-.spd { position: absolute; height: .35vmin; background: linear-gradient(90deg, transparent, rgba(243,241,237,.7)); }
-#carT { position: absolute; left: 50%; top: 50%; width: 26vmin; margin-left: -13vmin; margin-top: 1vmin; }
-#beam { position: absolute; left: 100%; top: 6%; width: 30vmin; height: 88%; background: linear-gradient(90deg, rgba(231,176,75,.55), rgba(231,176,75,0)); clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%); }
-.pills { width: 92vmin; display: flex; flex-wrap: wrap; justify-content: center; gap: 2vmin; white-space: normal; }
-.pill { display: flex; align-items: center; gap: 1.4vmin; padding: 1.4vmin 2.8vmin 1.4vmin 1.6vmin; border-radius: 99vmin; font-size: 3.2vmin; font-weight: 600; }
-.pill svg { width: 4.2vmin; height: 4.2vmin; }
-.pill circle { fill: var(--br); }
-.pill path { fill: none; stroke: var(--cr); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.bill { width: 30vmin; height: 15vmin; border-radius: 1.2vmin; background: var(--dp); box-shadow: inset 0 0 0 .7vmin var(--br), 0 2vmin 4vmin rgba(11,11,12,.25); display: grid; place-items: center; color: var(--cr); }
-.bill span { font-family: IS, serif; font-size: 10vmin; line-height: 1; }
-.bill sub { position: absolute; left: 1.8vmin; top: 1.2vmin; font-size: 2.4vmin; font-weight: 800; }
-#lock { width: 24vmin; }
-.ring { width: 36vmin; height: 36vmin; border-radius: 50%; border: .5vmin solid var(--ac); }
+.tagp { padding: 2vmin 2.6vmin; }
+.tagp small { display: block; font-size: 1.7vmin; color: var(--gr); letter-spacing: .06em; }
+.tagp b { display: block; font-size: 6.4vmin; font-weight: 640; letter-spacing: -.06em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.tagp em { font-family: PF; font-size: 2.3vmin; color: var(--br); }
+.rule { height: 1px; background: rgba(20,20,20,.35); transform-origin: 0 50%; }
+.rule::before, .rule::after { content: ''; position: absolute; top: -1vmin; width: 1px; height: 2vmin; background: rgba(20,20,20,.35); }
+.rule::before { left: 0; } .rule::after { right: 0; }
+.rule span { position: absolute; left: 50%; top: 1.2vmin; transform: translateX(-50%); font-size: 1.6vmin; color: var(--gr); letter-spacing: .2em; }
+.tile { overflow: hidden; border-radius: 30% 24% 28% 22% / 26% 30% 24% 28%; box-shadow: 0 3vmin 6vmin rgba(20,20,20,.18); }
+.tile img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.75) contrast(1.05); }
+#lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#lines path { fill: none; stroke: rgba(20,20,20,.45); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+#lines circle { fill: var(--br); }
+.co { display: flex; align-items: center; gap: 1.2vmin; font-size: 2.5vmin; font-weight: 560; letter-spacing: -.02em; }
+.co svg { width: 3vmin; height: 3vmin; }
+.co circle { fill: var(--ink); }
+.co path { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+#key { width: 15vmin; filter: drop-shadow(0 2.4vmin 2vmin rgba(10,10,10,.35)); }
+#key img { display: block; width: 100%; }
+#pay { width: 48vmin; padding: 2.6vmin 3vmin; }
+#pay header { display: flex; justify-content: space-between; align-items: center; font-size: 1.9vmin; color: var(--gr); }
+#pay header i { font-style: normal; display: flex; align-items: center; gap: .8vmin; color: var(--br); font-weight: 600; }
+#pay header svg { width: 2.6vmin; height: 2.6vmin; }
+#pay b { display: block; margin: 1.4vmin 0 .8vmin; font-size: 7.4vmin; font-weight: 640; letter-spacing: -.06em; line-height: 1; }
+#pay p { font-size: 2vmin; color: var(--tx); }
+#pay .prog { height: .5vmin; margin-top: 2vmin; border-radius: 1vmin; background: #ECEAE6; overflow: hidden; }
+#pay .prog i { display: block; height: 100%; width: 100%; background: var(--br); transform-origin: 0 50%; }
 
 /* preuve */
-#five { font-family: IS, serif; font-size: 44vmin; line-height: .9; letter-spacing: -.02em; }
-.stars { display: flex; gap: 1.6vmin; }
-.stars svg { width: 8vmin; height: 8vmin; fill: var(--gd); filter: drop-shadow(0 .8vmin 1vmin rgba(231,176,75,.35)); }
-.quote { font-family: IS, serif; font-style: italic; font-size: 6vmin; color: var(--br); }
-.tiles { display: flex; gap: 2.6vmin; }
-.tile { width: 30vmin; height: 25vmin; padding: 3vmin 2.6vmin; display: flex; flex-direction: column; justify-content: space-between; }
-.tile b { font-size: 7.4vmin; font-weight: 800; letter-spacing: -.045em; font-variant-numeric: tabular-nums; line-height: 1; }
-.tile b small { font-size: 3.2vmin; letter-spacing: 0; margin-left: .6vmin; }
-.tile span { font-size: 2.6vmin; font-weight: 500; color: #5d5955; white-space: normal; line-height: 1.3; }
-.tile:nth-child(1) b { color: var(--br); }
-.bar { display: flex; align-items: flex-end; gap: .42vmin; height: 7vmin; }
-.bar i { display: block; height: 100%; background: var(--ink); }
-.est { font-size: 2.2vmin; font-weight: 700; letter-spacing: .32em; text-align: center; margin-top: 1.4vmin; }
+#five { font-family: PF; font-style: italic; font-size: 34vmin; line-height: .9; letter-spacing: -.03em; }
+.stars { display: flex; gap: 1.4vmin; }
+.stars svg { width: 4.6vmin; height: 4.6vmin; fill: var(--br); }
+.quote { font-family: PF; font-style: italic; font-size: 5.2vmin; color: var(--ink); }
+.specs { display: grid; grid-template-columns: repeat(3, 1fr); width: 82vmin; border-top: 1px solid rgba(20,20,20,.3); }
+.spec { padding: 2.2vmin 2vmin 0; border-left: 1px solid rgba(20,20,20,.18); }
+.spec:first-child { border-left: 0; }
+.spec b { display: block; font-size: 6.6vmin; font-weight: 640; letter-spacing: -.06em; line-height: 1; font-variant-numeric: tabular-nums; }
+.spec b small { font-size: 2.8vmin; letter-spacing: -.02em; margin-left: .5vmin; }
+.spec span { display: block; margin-top: 1vmin; font-size: 2vmin; color: var(--gr); white-space: normal; }
 
 /* CTA */
-#s6 .disc { background: radial-gradient(110% 80% at 50% 40%, #7a1d1b 0%, var(--dp) 60%, #4a0e0d 100%); }
-#logoC { width: 50vmin; }
+#s6 { background: #0c0c0c; overflow: hidden; }
+#hall { background-image: url(assets/entrepot.jpg); filter: grayscale(1) contrast(1.1) brightness(.62); }
+#s6 .tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(60,10,10,.62), rgba(30,6,6,.78)); mix-blend-mode: multiply; }
+#s6 .shade { position: absolute; inset: 0; background: radial-gradient(80% 60% at 50% 50%, rgba(0,0,0,.05), rgba(0,0,0,.6)); }
+#logoC { width: 46vmin; }
 #logoC svg { display: block; width: 100%; height: auto; }
 #logoC path { fill: var(--cr); }
-.cta { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: .95; color: var(--cr); }
-.cta .r1 { font-size: 13vmin; font-weight: 800; letter-spacing: -.045em; }
-.cta .r2 { font-size: 15vmin; color: var(--gd); }
-.btn { display: flex; align-items: center; gap: 2.4vmin; padding: 3vmin 4.6vmin; background: var(--cr); color: var(--dp); font-size: 3.1vmin; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; overflow: hidden; }
-.btn b { font-weight: 400; font-size: 4.4vmin; letter-spacing: 0; }
-.rip { position: absolute; left: 50%; top: 50%; width: 30vmin; height: 30vmin; margin: -15vmin 0 0 -15vmin; border-radius: 50%; background: rgba(140, 59, 59, .25); }
-.url { font-size: 4vmin; font-weight: 600; color: var(--cr); letter-spacing: .02em; }
-.tel { display: flex; align-items: center; gap: 1.8vmin; font-size: 5.4vmin; font-weight: 800; color: var(--cr); letter-spacing: .01em; }
-.tel svg { width: 4.6vmin; height: 4.6vmin; fill: var(--gd); }
+.cta { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: .98; color: var(--cr); }
+.cta .g { font-size: 8.4vmin; }
+.cta .s { font-size: 11.5vmin; color: var(--cr); }
+.btn { display: flex; align-items: center; gap: 2vmin; padding: 2.4vmin 4vmin; border: 1px solid rgba(243,241,237,.75); color: var(--cr); font-size: 2.4vmin; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; overflow: hidden; isolation: isolate; }
+.btn b { font-weight: 300; font-size: 3.4vmin; letter-spacing: 0; }
+.btn .fill { position: absolute; inset: 0; background: var(--cr); transform-origin: 0 50%; z-index: -1; }
+.url { font-size: 3vmin; font-weight: 500; color: rgba(243,241,237,.85); letter-spacing: .01em; }
+.tel { font-size: 4.4vmin; font-weight: 640; letter-spacing: -.02em; color: var(--cr); }
 
 /* calques */
-#fx svg { position: absolute; fill: var(--dp); }
+#dof img { position: absolute; left: 50%; top: 50%; filter: blur(2.3vmin) brightness(.55); opacity: .95; }
 #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
-#grain { position: absolute; inset: -60px; opacity: .085; mix-blend-mode: multiply; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); }
-#vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(11, 11, 12, .2) 100%); }
+#grain { position: absolute; inset: -60px; opacity: .07; mix-blend-mode: multiply; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); }
+#vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 100% at 50% 45%, transparent 60%, rgba(20, 20, 20, .16) 100%); }
 </style>
 </head>
 <body>
 <div id="cam">
-  <div id="bg"></div>
+  <div id="studio"></div>
+  <div id="dots"></div>
+  <svg id="curve" preserveAspectRatio="none" viewBox="0 0 100 100"><path pathLength="1" vector-effect="non-scaling-stroke" d="M-5 78 C 22 60, 38 92, 58 70 S 92 30, 106 44" /></svg>
 
   <section class="scene" id="s1">
-    <div class="c note card" id="n1"><i>K</i><div><b>Karim</b><span>Toujours dispo ?</span></div><time>21:42</time></div>
-    <div class="c note card" id="n2"><i>J</i><div><b>Julie</b><span>C’est quoi votre dernier prix ?</span></div><time>21:44</time></div>
-    <div class="c note card" id="n3"><i>?</i><div><b>Numéro inconnu</b><span>Je passe ce soir… ou demain.</span></div><time>22:03</time></div>
-    <div class="c note card" id="n4"><i>M</i><div><b>Marc</b><span>Vous faites 2 000 € de moins ?</span></div><time>22:17</time></div>
-    <h1 class="c hl" id="hl"><span class="r1">Vendre</span><span class="r2 serif it">sa voiture</span><span class="r3">entre particuliers ?</span></h1>
-    <div class="c stats" id="stats">
-      <div class="st"><b id="sa">0</b><span class="serif it">messages</span></div>
-      <div class="st"><b id="sb">0</b><span class="serif it">visites</span></div>
-      <div class="st"><b>0</b><span class="serif it">vente.</span><i class="strike"></i></div>
+    <p class="c kick" id="k1">N° 01 — Le constat</p>
+    <div class="c note ui" id="n1"><i>K</i><div><b>Karim</b><span>Toujours dispo ?</span></div><time>21:42</time></div>
+    <div class="c note ui" id="n2"><i>J</i><div><b>Julie</b><span>C’est quoi votre dernier prix ?</span></div><time>21:44</time></div>
+    <div class="c note ui" id="n3"><i>?</i><div><b>Numéro inconnu</b><span>Je passe ce soir… ou demain.</span></div><time>22:03</time></div>
+    <div class="c note ui" id="n4"><i>M</i><div><b>Marc</b><span>Vous faites 2 000 € de moins ?</span></div><time>22:17</time></div>
+    <h1 class="c hl" id="hl"><span class="g">Vendre sa voiture</span><span class="s">entre particuliers ?</span></h1>
+    <div class="c ui" id="board">
+      <header><span>Votre annonce · 3 semaines</span><span>Messages</span></header>
+      <svg viewBox="0 0 300 100" preserveAspectRatio="none"><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8C3B3B" stop-opacity=".16"/><stop offset="1" stop-color="#8C3B3B" stop-opacity="0"/></linearGradient></defs>
+        <path id="area" d="M0 92 L30 84 60 87 90 72 120 75 150 58 180 61 210 42 240 47 270 24 300 12 L300 100 L0 100Z"/>
+        <path id="chart" pathLength="1" d="M0 92 L30 84 60 87 90 72 120 75 150 58 180 61 210 42 240 47 270 24 300 12"/></svg>
+      <div class="kpis"><div class="kpi"><b id="ka">0</b><span>messages</span></div><div class="kpi"><b id="kb">0</b><span>visites</span></div><div class="kpi zero"><b>0</b><span>vente.</span></div></div>
     </div>
   </section>
 
   <section class="scene" id="s2">
-    <div id="slash"></div>
-    <h2 class="c q" id="q"><span class="r1">Et si quelqu’un</span><span class="r2 serif it">s’occupait de tout ?</span></h2>
+    <div class="full" id="phare"></div><div id="sweep"></div><div class="shade"></div>
+    <h2 class="c q" id="q"><span class="g">Et si quelqu’un</span><span class="s">s’en occupait ?</span></h2>
   </section>
 
   <section class="scene" id="s3">
-    <div class="disc"></div>
-    <p class="c lab" id="lab3">Dépôt-vente de voitures d’occasion<br />Saint-Béron · Savoie</p>
+    <div class="c" id="logo"></div>
+    <div class="c sig" id="sig"><p class="kick">Dépôt-vente de voitures d’occasion</p><div class="bar" id="bar"></div><p class="kick" style="color:var(--ink);letter-spacing:.42em">JT NEXT DRIVE · EST. 2026 · SAVOIE</p></div>
   </section>
 
   <section class="scene" id="st1">
-    <div class="c num">01</div>
-    <h2 class="c ttl"><span>Estimation</span><span class="serif it">gratuite.</span></h2>
-    <div class="c tag card" id="tag"><small>Votre voiture vaut</small><strong id="price">0 €</strong><em>estimation au prix du marché</em><i class="scan"></i></div>
-    <p class="c lab" id="lab1">Réponse en 1 h en moyenne</p>
+    <p class="c kick">Étape 01 / 04</p>
+    <h2 class="c ttl"><span class="g">Estimation</span><span class="s">gratuite.</span></h2>
+    <div class="car" id="rs6"><img src="assets/rs6.png" alt="" /></div>
+    <div class="c rule" id="rule1"><span>PRIX DU MARCHÉ</span></div>
+    <div class="c ui tagp" id="price"><small>Votre voiture vaut</small><b id="pv">0 €</b><em>réponse en 1 h en moyenne</em></div>
+    <p class="c para" id="p1">Une offre juste, fondée sur le marché réel. Gratuite, sans engagement, en une heure en moyenne.</p>
   </section>
 
   <section class="scene" id="st2">
-    <div class="c num">02</div>
-    <h2 class="c ttl"><span>Photos</span><span class="serif it">pro.</span></h2>
-    <div class="c vf" id="vf">
-      <i></i><i></i><i></i><i></i><span class="rec"></span>
-      <u style="left:2vmin;top:7.4vmin">ISO 100</u><u style="right:2vmin;top:7.4vmin">1/250 S</u>
-      <u style="left:2vmin;bottom:2.2vmin">F/2.8</u><u style="right:2vmin;bottom:2.2vmin" id="shots">PHOTO 01/24</u>
-      <svg id="carS" viewBox="0 0 200 72"><path fill="#641413" d="M8 52c0-8 6-13 17-15l33-5c14-11 30-17 52-17 20 0 36 6 50 17l19 3c10 2 13 8 13 16v5H8z"/><path fill="#F3F1ED" opacity=".85" d="M70 32c12-9 26-13 40-13 15 0 28 4 39 13z"/><rect x="178" y="40" width="10" height="5" rx="2" fill="#E7B04B"/><rect x="9" y="41" width="8" height="5" rx="2" fill="#C4474D"/><g id="w1"><circle cx="48" cy="57" r="12" fill="#0B0B0C"/><circle cx="48" cy="57" r="6" fill="#A19C97"/><path d="M42 57h12M48 51v12" stroke="#0B0B0C" stroke-width="2"/></g><g id="w2"><circle cx="156" cy="57" r="12" fill="#0B0B0C"/><circle cx="156" cy="57" r="6" fill="#A19C97"/><path d="M150 57h12M156 51v12" stroke="#0B0B0C" stroke-width="2"/></g></svg>
-    </div>
-    <div class="c pol card" id="p1"><div><svg viewBox="0 0 200 72"><path fill="#F3F1ED" d="M8 52c0-8 6-13 17-15l33-5c14-11 30-17 52-17 20 0 36 6 50 17l19 3c10 2 13 8 13 16v5H8z"/><circle cx="48" cy="57" r="12" fill="#0B0B0C"/><circle cx="156" cy="57" r="12" fill="#0B0B0C"/></svg></div></div>
-    <div class="c pol card" id="p2"><div><svg viewBox="0 0 200 72"><path fill="#F3F1ED" d="M8 52c0-8 6-13 17-15l33-5c14-11 30-17 52-17 20 0 36 6 50 17l19 3c10 2 13 8 13 16v5H8z"/><circle cx="48" cy="57" r="12" fill="#0B0B0C"/><circle cx="156" cy="57" r="12" fill="#0B0B0C"/></svg></div></div>
-    <p class="c lab" id="lab2">Préparation · annonces · diffusion</p>
+    <p class="c kick">Étape 02 / 04</p>
+    <h2 class="c ttl"><span class="g">Mise en</span><span class="s">valeur.</span></h2>
+    <div class="c tile" id="t1"><img src="assets/tile-ford-mustang.jpg" alt="" /></div>
+    <div class="c tile" id="t2"><img src="assets/tile-land-rover.jpg" alt="" /></div>
+    <div class="c tile" id="t3"><img src="assets/tile-mercedes-marco.jpg" alt="" /></div>
+    <p class="c para" id="p2">Préparation, photos professionnelles et annonces diffusées partout. Votre voiture sous son meilleur jour.</p>
   </section>
 
   <section class="scene" id="st3">
-    <div class="c num">03</div>
-    <div id="road"><b></b><div id="dash"></div><i class="spd" style="top:22%;width:20vmin"></i><i class="spd" style="top:70%;width:14vmin"></i><i class="spd" style="top:38%;width:26vmin"></i><i class="spd" style="top:84%;width:18vmin"></i></div>
-    <div id="carT"><div id="beam"></div><svg viewBox="0 0 220 100"><rect x="8" y="10" width="204" height="80" rx="32" fill="#641413"/><rect x="200" y="20" width="9" height="16" rx="3" fill="#E7B04B"/><rect x="200" y="64" width="9" height="16" rx="3" fill="#E7B04B"/><rect x="10" y="20" width="7" height="16" rx="3" fill="#C4474D"/><rect x="10" y="64" width="7" height="16" rx="3" fill="#C4474D"/><path fill="#0B0B0C" d="M66 20h80c18 0 30 12 32 30-2 18-14 30-32 30H66c-10 0-14-12-14-30s4-30 14-30z"/><rect x="78" y="28" width="58" height="44" rx="10" fill="#8C3B3B"/><rect x="146" y="4" width="12" height="8" rx="3" fill="#641413"/><rect x="146" y="88" width="12" height="8" rx="3" fill="#641413"/></svg></div>
-    <h2 class="c ttl"><span>On gère</span><span class="serif it">tout.</span></h2>
-    <div class="c pills">
-      <span class="pill card"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path pathLength="1" d="M7 12.4l3.2 3.2L17 8.8"/></svg>Annonces</span>
-      <span class="pill card"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path pathLength="1" d="M7 12.4l3.2 3.2L17 8.8"/></svg>Appels</span>
-      <span class="pill card"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path pathLength="1" d="M7 12.4l3.2 3.2L17 8.8"/></svg>Visites</span>
-      <span class="pill card"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path pathLength="1" d="M7 12.4l3.2 3.2L17 8.8"/></svg>Essais</span>
-      <span class="pill card"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path pathLength="1" d="M7 12.4l3.2 3.2L17 8.8"/></svg>Négociation</span>
-      <span class="pill card"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path pathLength="1" d="M7 12.4l3.2 3.2L17 8.8"/></svg>Carte grise</span>
-    </div>
+    <p class="c kick">Étape 03 / 04</p>
+    <h2 class="c ttl"><span class="g">On gère</span><span class="s">tout.</span></h2>
+    <svg id="lines"></svg>
+    <div class="car" id="def"><img src="assets/defender.png" alt="" /></div>
+    <div id="cos"></div>
   </section>
 
   <section class="scene" id="st4">
-    <div class="c num">04</div>
-    <h2 class="c ttl"><span>Paiement</span><span class="serif it">sécurisé.</span></h2>
-    <div class="c ring" id="ring"></div>
-    <svg class="c" id="lock" viewBox="0 0 100 120"><path id="shackle" d="M28 54V36a22 22 0 0 1 44 0v18" fill="none" stroke="#8C3B3B" stroke-width="10" stroke-linecap="round"/><rect x="12" y="50" width="76" height="62" rx="12" fill="#8C3B3B"/><circle cx="50" cy="76" r="7" fill="#F3F1ED"/><rect x="47" y="78" width="6" height="16" rx="3" fill="#F3F1ED"/></svg>
-    <div id="bills"></div>
-    <p class="c lab" id="lab4">Fonds sur compte séquestre</p>
+    <p class="c kick">Étape 04 / 04</p>
+    <h2 class="c ttl"><span class="g">Paiement</span><span class="s">sécurisé.</span></h2>
+    <div class="c ui" id="pay">
+      <header><span>Virement · compte séquestre</span><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#8C3B3B"/><path d="M7 12.4l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Reçu</i></header>
+      <b id="payv">0 €</b><p>Fonds sécurisés jusqu’à la remise des clés.</p><div class="prog"><i></i></div>
+    </div>
+    <div class="c" id="key"><img src="assets/key-hero.png" alt="" /></div>
   </section>
 
   <section class="scene" id="s5">
     <div class="c" id="five">0,0</div>
     <div class="c stars" id="stars"></div>
-    <p class="c lab" id="lab5"><b id="n43" style="color:var(--ink)">0</b> avis Google</p>
+    <p class="c kick" id="n43w"><b id="n43" style="color:var(--ink)">0</b> avis Google</p>
     <p class="c quote" id="quote">« Une réactivité parfaite ! »</p>
-    <p class="c lab" id="author" style="letter-spacing:.18em">Thomas S. · avis Google</p>
-    <h2 class="c serif it" id="ttl5" style="font-size:9.4vmin">Les chiffres parlent.</h2>
-    <div class="c tiles" id="tiles">
-      <div class="tile card"><b id="t1">990 €</b><span>de frais pour le vendeur</span></div>
-      <div class="tile card"><b id="t2">0<small>m²</small></b><span>de showroom à Saint-Béron</span></div>
-      <div class="tile card"><b id="t3">3–3<small>mois</small></b><span>de garantie mécanique</span></div>
+    <p class="c kick" id="author">Thomas S.</p>
+    <div class="car" id="slk"><img src="assets/slk.png" alt="" /></div>
+    <div class="c specs" id="specs">
+      <div class="spec"><b id="sp1">990 €</b><span>de frais pour le vendeur</span></div>
+      <div class="spec"><b id="sp2">0<small>m²</small></b><span>de showroom à Saint-Béron</span></div>
+      <div class="spec"><b id="sp3">3–3<small>mois</small></b><span>de garantie mécanique</span></div>
     </div>
-    <div class="c" id="code"><div class="bar" id="bar"></div><p class="est">NEXT DRIVE · EST. 2026 · SAVOIE</p></div>
   </section>
 
   <section class="scene" id="s6">
-    <div class="disc"></div>
+    <div class="full" id="hall"></div><div class="tint"></div><div class="shade"></div>
     <div class="c" id="logoC"></div>
-    <h2 class="c cta" id="cta"><span class="r1">Vendez</span><span class="r2 serif it">sans frais.</span></h2>
-    <div class="c btn" id="btn"><span>Faire estimer ma voiture</span><b>→</b><i class="rip"></i></div>
+    <h2 class="c cta" id="cta"><span class="g">Vendez votre voiture</span><span class="s">sans frais.</span></h2>
+    <div class="c btn" id="btn"><i class="fill"></i><span>Faire estimer ma voiture</span><b>→</b></div>
     <p class="c url" id="url">jt-nextdrive.vercel.app</p>
-    <p class="c tel" id="tel"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>06 82 71 77 39</p>
+    <p class="c tel" id="tel">06 82 71 77 39</p>
   </section>
 
-  <div class="c" id="logoWrap"><div id="logoA"></div><div id="logoB"></div></div>
-  <div id="fx"></div>
+  <div class="c" id="mark"></div>
+  <div id="dof"><img src="assets/key-blur.png" alt="" id="d1" /><img src="assets/key-blur.png" alt="" id="d2" /></div>
 </div>
 <div id="flash"></div>
 <div id="grain"></div>
@@ -237,9 +236,10 @@ body { font-family: IN, sans-serif; color: var(--ink); -webkit-font-smoothing: a
 
 <script src="../node_modules/gsap/dist/gsap.min.js"></script>
 <script>
-// Rendu déterministe : tout l'état se recalcule depuis t (secondes) via render(t). 120 BPM : un temps = 0,5 s.
+// Rendu déterministe : render(t) recalcule tout l'état depuis t (secondes). 120 BPM : un temps = 0,5 s.
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
-const W = innerWidth, H = innerHeight, U = Math.min(W, H) / 100, V = H > W, KX = V ? 1 : 1.55, KY = V ? 1 : 0.86;
+const W = innerWidth, H = innerHeight, U = Math.min(W, H) / 100, V = H > W;
+const KX = V ? 1 : 1.5, KY = V ? 1.3 : 1, CAR = V ? 88 : 64;
 const u = (n) => n * U;
 const tl = gsap.timeline({ paused: true });
 const dyn = [];
@@ -259,194 +259,206 @@ function split(el) {
           m.append(w); frag.append(m); out.push(w);
         });
         n.replaceWith(frag);
-      } else if (n.nodeType === 1 && n.tagName !== 'BR' && n.tagName !== 'svg') walk(n);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR' && n.tagName !== 'svg' && !n.id) walk(n);
     });
   })(el);
   return out;
 }
-const reveal = (el, T, s = 0.045, d = 0.62) => tl.fromTo(split(typeof el === 'string' ? $(el) : el), { yPercent: 120, rotate: 6 }, { yPercent: 0, rotate: 0, duration: d, ease: 'expo.out', stagger: s }, T);
-const leave = (el, T, to = {}, d = 0.32) => tl.fromTo(el, { filter: 'blur(0px)' }, { autoAlpha: 0, y: `-=${u(12)}`, filter: 'blur(14px)', duration: d, ease: 'power3.in', immediateRender: false, ...to }, T);
+const el = (x) => (typeof x === 'string' ? $(x) : x);
+const reveal = (x, T, s = 0.05, d = 0.7) => tl.fromTo(split(el(x)), { yPercent: 125 }, { yPercent: 0, duration: d, ease: 'expo.out', stagger: s }, T);
+const leave = (x, T, to = {}, d = 0.34) => tl.fromTo(x, { filter: 'blur(0px)' }, { autoAlpha: 0, y: `-=${u(10)}`, filter: 'blur(16px)', duration: d, ease: 'power3.in', immediateRender: false, ...to }, T);
 const scene = (id, a, b) => { if (a > 0) { gsap.set(id, { autoAlpha: 0 }); tl.set(id, { autoAlpha: 1 }, a); } if (b) tl.set(id, { autoAlpha: 0 }, b); };
-const count = (el, t0, t1, a, b, fmt, ease = 'power3.out') => { const e = gsap.parseEase(ease); dyn.push((t) => { const p = Math.min(1, Math.max(0, (t - t0) / (t1 - t0))); el.innerHTML = fmt(a + (b - a) * e(p)); }); };
+const count = (x, t0, t1, a, b, fmt, ease = 'power3.out') => { const e = gsap.parseEase(ease), node = el(x); dyn.push((t) => { const p = Math.min(1, Math.max(0, (t - t0) / (t1 - t0))); node.innerHTML = fmt(a + (b - a) * e(p)); }); };
 const fr = (n) => Math.round(n).toLocaleString('fr-FR').replace(/\s/g, ' ');
-const at = (el, x, y, extra = {}) => gsap.set(el, { xPercent: -50, yPercent: -50, x: u(x), y: u(y), ...extra });
+const at = (x, X, Y, extra = {}) => gsap.set(x, { xPercent: -50, yPercent: -50, x: u(X), y: u(Y), ...extra });
+const car = (id, w, X, Y) => { gsap.set(id, { width: u(w), xPercent: -50, yPercent: -50, x: u(X), y: u(Y) }); };
+// arrivée d'une voiture « filée » : flou de bougé horizontal qui se résorbe
+const driveIn = (id, T, fromX, X, d = 0.75) => tl.fromTo(id, { x: fromX, autoAlpha: 1, filter: 'blur(22px)', skewX: fromX > 0 ? -8 : 8 }, { x: u(X), filter: 'blur(0px)', skewX: 0, duration: d, ease: 'expo.out' }, T);
+const driveOut = (id, T, toX, d = 0.3) => tl.fromTo(id, { filter: 'blur(0px)' }, { x: toX, filter: 'blur(24px)', skewX: toX > 0 ? -10 : 10, autoAlpha: 0, duration: d, ease: 'power3.in', immediateRender: false }, T);
+const stepHead = (id, a, b) => {
+  const k = $(`${id} .kick`), t = $(`${id} .ttl`);
+  at(k, 0, -37 * KY); at(t, 0, -25 * KY);
+  tl.fromTo(k, { autoAlpha: 0, y: u(-35 * KY) }, { autoAlpha: 1, y: u(-37 * KY), duration: 0.5, ease: 'expo.out' }, a);
+  reveal(t.children[0], a + 0.04, 0.05);
+  reveal(t.children[1], a + 0.16, 0.05);
+  leave([k, t], b - 0.14);
+};
 
 window.build = (logoSvg) => {
   const svg = (cls) => logoSvg.replace(/<svg[^>]*>/, `<svg viewBox="71 54 2292 1145" class="${cls}">`);
-  $('#logoA').innerHTML = svg('lg-a').replace('<path', '<path pathLength="1"');
-  $('#logoB').innerHTML = svg('lg-b');
-  $('#logoC').innerHTML = svg('lg-c');
-  // décor : chevrons flous au premier plan, billets, étoiles, code-barres
-  $('#fx').innerHTML = [[-44, -40, 30, -14], [42, 40, 34, 18], [40, -47, 20, 32]].map(([x, y, s, r]) => `<svg viewBox="0 0 40 40" data-x="${x}" data-y="${y}" data-r="${r}" style="width:${s}vmin;filter:blur(1.3vmin);opacity:.42"><path d="M8 4l18 16L8 36h10l18-16L18 4z"/></svg>`).join('');
-  $('#bills').innerHTML = Array.from({ length: 9 }, (_, i) => `<div class="c bill"><sub>${[50, 100, 200][i % 3]}</sub><span>€</span></div>`).join('');
+  $('#logo').innerHTML = svg('lg');
+  $('#mark').innerHTML = svg('lg');
+  $('#logoC').innerHTML = svg('lg');
+  $('#mark').style.width = '13vmin';
   $('#stars').innerHTML = Array.from({ length: 5 }, () => '<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>').join('');
-  $('#bar').innerHTML = Array.from({ length: 46 }, (_, i) => `<i style="width:${[.3, .6, .3, .9, .3, .45][i * 7 % 6]}vmin;height:${i % 9 === 0 ? 100 : 86}%"></i>`).join('');
+  $('#bar').innerHTML = Array.from({ length: 52 }, (_, i) => `<i style="width:${[0.22, 0.5, 0.22, 0.8, 0.22, 0.36][(i * 7) % 6]}vmin;height:${i % 11 === 0 ? 100 : 84}%"></i>`).join('');
 
-  // ---------- 1. ACCROCHE (0 – 3,5 s) ----------
+  // décor permanent : profondeur de champ (clé floue au premier plan), grille de points, courbe
+  gsap.set('#d1', { width: u(62), xPercent: -50, yPercent: -50 });
+  gsap.set('#d2', { width: u(48), xPercent: -50, yPercent: -50 });
+  gsap.set('#dots', { autoAlpha: 0 });
+  tl.to('#dof', { autoAlpha: 0, duration: 0.2 }, 3.35).to('#dof', { autoAlpha: 1, duration: 0.4 }, 5.0).to('#dof', { autoAlpha: 0, duration: 0.15 }, 16.85);
+  tl.to('#dots', { autoAlpha: 1, duration: 0.6 }, 5.0).to('#dots', { autoAlpha: 0, duration: 0.4 }, 6.4).to('#dots', { autoAlpha: 0.7, duration: 0.5 }, 14.0).to('#dots', { autoAlpha: 0, duration: 0.3 }, 16.8);
+  tl.fromTo('#curve path', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, 5.05).to('#curve', { autoAlpha: 0, duration: 0.4 }, 6.6);
+
+  // ---------- 1. LE CONSTAT (0 – 3,5 s) ----------
+  at('#k1', 0, -37 * KY);
+  tl.fromTo('#k1', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.1);
   at('#hl', 0, -2);
-  reveal('#hl .r1', 0.05, 0.05);
-  reveal('#hl .r2', 0.3, 0.06);
-  reveal('#hl .r3', 0.62, 0.035, 0.5);
-  [['#n1', -17, -41, -4], ['#n2', 18, -31, 3], ['#n3', -18, 30, 2.5], ['#n4', 17, 40.5, -3]].forEach(([id, x, y, r], i) => {
+  reveal('#hl .g', 0.12, 0.06, 0.8);
+  reveal('#hl .s', 0.42, 0.06, 0.8);
+  [['#n1', -15, -27, -3], ['#n2', 17, -17, 2], ['#n3', -17, 19, 2], ['#n4', 15, 29, -2.5]].forEach(([id, x, y, r], i) => {
     y *= KY;
     at(id, x * KX, y);
-    tl.fromTo(id, { autoAlpha: 0, y: u(y - 12), scale: 0.8, rotate: r * 4 }, { autoAlpha: 1, y: u(y), scale: 1, rotate: r, duration: 0.5, ease: 'back.out(1.7)' }, 1.0 + i * 0.25);
-    tl.to(id, { x: `+=${u(x > 0 ? 1.2 : -1.2)}`, duration: 0.05, repeat: 3, yoyo: true, ease: 'none' }, 1.0 + i * 0.25 + 0.02);
-    leave(id, 1.95 + i * 0.03, { x: u(x * KX * 2.2), y: u(y * 1.6), rotate: r * 5 });
+    tl.fromTo(id, { autoAlpha: 0, y: u(y + 6), scale: 0.92, rotate: 0 }, { autoAlpha: 1, y: u(y), scale: 1, rotate: r, duration: 0.6, ease: 'expo.out' }, 1.0 + i * 0.25);
+    leave(id, 1.92 + i * 0.03, { y: `-=${u(6)}` });
   });
-  leave('#hl', 1.97);
-  at('#stats', 2, 0);
-  scene('#stats', 2.0);
-  $$('.st').forEach((el, i) => tl.fromTo(el, { autoAlpha: 0, y: u(8), filter: 'blur(10px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.45, ease: 'expo.out' }, 2.0 + i * 0.5));
-  count($('#sa'), 2.0, 2.42, 0, 47, fr, 'power2.out');
-  count($('#sb'), 2.5, 2.88, 0, 12, fr, 'power2.out');
-  tl.fromTo('.strike', { scaleX: 0 }, { scaleX: 1, duration: 0.22, ease: 'power2.inOut' }, 3.15);
-  tl.to('#stats', { scale: 1.06, duration: 1.5, ease: 'none' }, 2.0);
-  scene('#s1', 0, 3.52);
+  leave(['#hl', '#k1'], 1.94);
+  at('#board', 0, 2, { transformPerspective: u(140) });
+  tl.fromTo('#board', { autoAlpha: 0, y: u(14), rotationX: 18, filter: 'blur(10px)' }, { autoAlpha: 1, y: u(2), rotationX: 0, filter: 'blur(0px)', duration: 0.7, ease: 'expo.out' }, 2.0);
+  tl.to('#chart', { strokeDashoffset: 0, duration: 0.95, ease: 'power2.inOut' }, 2.05);
+  tl.fromTo('#area', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 2.4);
+  count('#ka', 2.05, 2.75, 0, 47, fr, 'power2.out');
+  count('#kb', 2.4, 2.95, 0, 12, fr, 'power2.out');
+  tl.fromTo('.kpi.zero', { autoAlpha: 0.15 }, { autoAlpha: 1, duration: 0.3 }, 3.0);
+  tl.to('#board', { scale: 3.2, filter: 'blur(26px)', autoAlpha: 0, duration: 0.3, ease: 'power3.in' }, 3.2);
+  scene('#s1', 0, 3.5);
 
-  // ---------- 2. LA QUESTION, SUR LA DIAGONALE (3,25 – 5,2 s) ----------
-  const S = 2.4 * Math.max(W, H);
-  gsap.set('#slash', { width: S, height: S, xPercent: -50, yPercent: -50, x: -S, rotate: -16 });
-  scene('#s2', 3.25, 5.2);
-  tl.to('#slash', { x: 0, duration: 0.25, ease: 'expo.in' }, 3.25);
+  // ---------- 2. LA QUESTION, PLEIN CADRE (3,5 – 5 s) ----------
+  scene('#s2', 3.5, 5.0);
+  tl.fromTo('#phare', { scale: 1.18, rotate: -1.2 }, { scale: 1.02, rotate: 0, duration: 1.6, ease: 'power2.out' }, 3.5);
+  tl.fromTo('#sweep', { xPercent: -80 }, { xPercent: 80, duration: 1.2, ease: 'power2.inOut' }, 3.6);
+  tl.fromTo('#flash', { autoAlpha: 0.85 }, { autoAlpha: 0, duration: 0.25, ease: 'power2.out', immediateRender: false }, 3.5);
   at('#q', 0, 0);
-  reveal('#q .r1', 3.58, 0.05);
-  reveal('#q .r2', 3.84, 0.06);
-  tl.to('#q', { scale: 1.07, duration: 1.2, ease: 'none' }, 3.58);
-  leave('#q', 4.72);
+  reveal('#q .g', 3.62, 0.06, 0.75);
+  reveal('#q .s', 3.86, 0.07, 0.75);
+  tl.to('#s2', { scale: 1.4, filter: 'blur(30px)', autoAlpha: 0, duration: 0.3, ease: 'power3.in' }, 4.72);
 
-  // ---------- 3. RÉVÉLATION DU LOGO (4,8 – 6,9 s) ----------
-  scene('#s3', 4.8);
-  tl.fromTo('#s3 .disc', { clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(80% at 50% 50%)', duration: 0.38, ease: 'expo.inOut' }, 4.8);
-  at('#logoWrap', 0, -6);
-  scene('#logoWrap', 4.98, 13.95);
-  tl.to('#logoA path', { strokeDashoffset: 0, duration: 0.85, ease: 'power2.inOut' }, 5.0);
-  tl.to('#logoA path', { fill: 'rgba(100,20,19,1)', strokeWidth: 0, duration: 0.45, ease: 'power2.out' }, 5.55);
-  tl.fromTo('#logoWrap', { scale: 1.16 }, { scale: 1, duration: 1.3, ease: 'power2.out', immediateRender: false }, 5.0);
-  tl.fromTo('#logoB', { clipPath: 'polygon(-40% 0%, -22% 0%, -42% 100%, -60% 100%)' }, { clipPath: 'polygon(140% 0%, 158% 0%, 138% 100%, 120% 100%)', duration: 0.5, ease: 'power2.inOut' }, 5.9);
-  at('#lab3', 0, 17);
-  reveal('#lab3', 5.6, 0.018, 0.5);
-  leave('#lab3', 6.22);
-  tl.to('#logoWrap', { y: u(-41), scale: 0.26, duration: 0.6, ease: 'expo.inOut' }, 6.3);
+  // ---------- 3. NEXT DRIVE (5 – 6,5 s) ----------
+  scene('#s3', 5.0, 6.6);
+  at('#logo', 0, -5 * KY);
+  tl.fromTo('#logo', { clipPath: 'inset(0% 50% 0% 50%)', scale: 1.1 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 0.9, ease: 'expo.inOut' }, 5.05);
+  at('#sig', 0, 17 * KY);
+  tl.fromTo('#sig > *', { autoAlpha: 0, y: u(3) }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'expo.out', stagger: 0.12 }, 5.6);
+  tl.fromTo('#bar i', { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.35, ease: 'expo.out', stagger: 0.005 }, 5.7);
+  leave(['#logo', '#sig'], 6.32, { y: `-=${u(4)}` }, 0.22);
+  at('#mark', 0, -46 * KY);
+  scene('#mark', 6.5, 14.0);
+  tl.fromTo('#mark', { autoAlpha: 0, y: u(-43 * KY) }, { autoAlpha: 1, y: u(-46 * KY), duration: 0.5, ease: 'expo.out' }, 6.5);
 
   // ---------- 4. LES QUATRE ÉTAPES (6,5 – 14 s) ----------
-  const step = (id, a, b) => {
-    scene(id, a, b + 0.1);
-    const num = $(`${id} .num`);
-    at(num, 0, 6);
-    tl.fromTo(num, { autoAlpha: 0, x: u(34) }, { autoAlpha: 1, x: u(-8), duration: b - a, ease: 'power1.out' }, a);
-    const ttl = $(`${id} .ttl`);
-    at(ttl, 0, -24);
-    reveal(ttl.children[0], a + 0.05, 0.05);
-    reveal(ttl.children[1], a + 0.2, 0.05);
-    leave([num, ttl], b - 0.12);
-  };
-  // 01 · estimation
-  step('#st1', 6.5, 8.25);
-  at('#tag', 0, 8, { transformPerspective: u(110) });
-  tl.fromTo('#tag', { autoAlpha: 0, rotationY: -80, rotationZ: -12, y: u(30) }, { autoAlpha: 1, rotationY: 0, rotationZ: -3, y: u(8), duration: 0.75, ease: 'back.out(1.4)' }, 6.6);
-  tl.fromTo('.scan', { left: '0%' }, { left: '100%', duration: 0.6, ease: 'power1.inOut' }, 6.92).to('.scan', { autoAlpha: 0, duration: 0.1 }, 7.52);
-  count($('#price'), 6.9, 7.62, 0, 18400, (n) => `${fr(Math.round(n / 50) * 50)} €`, 'power3.out');
-  tl.to('#tag', { rotationZ: 2, duration: 0.5, ease: 'power1.inOut' }, 7.6);
-  at('#lab1', 0, 32);
-  reveal('#lab1', 7.0, 0.03, 0.5);
-  leave('#tag', 8.12, { x: u(-70), y: `+=0`, rotationY: 40 });
-  leave('#lab1', 8.1);
-  // 02 · photos
-  step('#st2', 8.25, 10.0);
-  at('#vf', 0, 8);
-  tl.fromTo('#vf', { autoAlpha: 0, scale: 1.45 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'expo.out' }, 8.3);
-  tl.fromTo('#carS', { x: u(80) }, { x: 0, duration: 0.55, ease: 'expo.out' }, 8.3);
-  tl.fromTo('#w1', { rotation: 0 }, { rotation: -620, svgOrigin: '48 57', duration: 0.6, ease: 'expo.out' }, 8.3);
-  tl.fromTo('#w2', { rotation: 0 }, { rotation: -620, svgOrigin: '156 57', duration: 0.6, ease: 'expo.out' }, 8.3);
-  tl.fromTo('.rec', { autoAlpha: 1 }, { autoAlpha: 0.15, duration: 0.25, repeat: 5, yoyo: true, ease: 'none' }, 8.4);
-  [8.75, 9.25].forEach((T, i) => {
-    tl.fromTo('#flash', { autoAlpha: 0.95 }, { autoAlpha: 0, duration: 0.2, ease: 'power2.out', immediateRender: false }, T);
-    const p = i ? '#p2' : '#p1';
-    at(p, 0, 8);
-    tl.fromTo(p, { autoAlpha: 0, scale: 0.95, rotate: 0, x: 0, y: u(8) }, { autoAlpha: 1, scale: 0.42, rotate: i ? 9 : -9, x: u((i ? 33 : -33) * KX), y: u(-6), duration: 0.6, ease: 'expo.out' }, T + 0.02);
-    leave(p, 9.9);
+  // 01 · estimation : la RS6 arrive filée
+  scene('#st1', 6.5, 8.3);
+  stepHead('#st1', 6.5, 8.25);
+  car('#rs6', CAR, 0, 6);
+  driveIn('#rs6', 6.55, W, 0, 0.8);
+  at('#rule1', 0, 6 + CAR * 0.26, { width: u(CAR * 0.86) });
+  tl.fromTo('#rule1', { scaleX: 0, autoAlpha: 1 }, { scaleX: 1, duration: 0.6, ease: 'expo.inOut' }, 7.0);
+  at('#price', CAR * 0.28 * (V ? 0.7 : 1), -8, { transformPerspective: u(120) });
+  tl.fromTo('#price', { autoAlpha: 0, y: u(-2), rotationY: -40 }, { autoAlpha: 1, y: u(-8), rotationY: 0, duration: 0.6, ease: 'expo.out' }, 7.0);
+  count('#pv', 7.0, 7.7, 0, 18400, (n) => `${fr(Math.round(n / 50) * 50)} €`, 'power3.out');
+  at('#p1', 0, 36 * KY);
+  tl.fromTo('#p1', { autoAlpha: 0, y: u(38 * KY) }, { autoAlpha: 1, y: u(36 * KY), duration: 0.6, ease: 'expo.out' }, 7.2);
+  driveOut('#rs6', 8.0, -W);
+  leave(['#rule1', '#price', '#p1'], 8.0);
+  // 02 · mise en valeur : trois tirages, trois flashs
+  scene('#st2', 8.25, 10.05);
+  stepHead('#st2', 8.25, 10.0);
+  const tiles = V ? [[-17, -2, 46, 34, -4], [17, 13, 46, 34, 3], [-10, 28, 46, 34, -2]] : [[-42, 4, 46, 34, -4], [0, 8, 46, 34, 2], [42, 4, 46, 34, -3]];
+  tiles.forEach(([x, y, w, h, r], i) => {
+    const id = `#t${i + 1}`, T = [8.4, 8.75, 9.25][i];
+    gsap.set(id, { width: u(w), height: u(h) });
+    at(id, x, y);
+    tl.fromTo(id, { autoAlpha: 0, scale: 1.25, rotate: r * 3, filter: 'blur(14px)' }, { autoAlpha: 1, scale: 1, rotate: r, filter: 'blur(0px)', duration: 0.6, ease: 'expo.out' }, T);
+    tl.fromTo(`${id} img`, { scale: 1.25 }, { scale: 1, duration: 1.6, ease: 'power2.out' }, T);
+    leave(id, 9.86 + i * 0.03, { y: `-=${u(18)}`, rotate: r * 4 });
   });
-  dyn.push((t) => { $('#shots').textContent = `PHOTO ${t < 8.75 ? '01' : t < 9.25 ? '12' : '24'}/24`; });
-  at('#lab2', 0, 32);
-  reveal('#lab2', 8.6, 0.03, 0.5);
-  leave(['#vf', '#lab2'], 9.88);
-  // 03 · on gère tout
-  step('#st3', 10.0, 12.0);
-  tl.fromTo('#road', { scaleY: 0 }, { scaleY: 1, duration: 0.42, ease: 'expo.out' }, 10.0);
-  tl.fromTo('#dash', { x: 0 }, { x: -u(470), duration: 2.0, ease: 'none' }, 10.0);
-  tl.fromTo('.spd', { x: W }, { x: -u(40), duration: 0.32, repeat: 5, ease: 'none', stagger: 0.07 }, 10.1);
-  tl.fromTo('#carT', { x: -W * 0.75 }, { x: u(-6), duration: 0.9, ease: 'expo.out' }, 10.05).to('#carT', { x: u(4), duration: 1.0, ease: 'none' }, 10.95);
-  tl.fromTo('#beam', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 10.3);
-  at('.pills', 0, 28);
-  $$('.pill').forEach((el, i) => {
-    tl.fromTo(el, { autoAlpha: 0, scale: 0.55, y: u(4) }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.42, ease: 'back.out(2.2)' }, 10.5 + i * 0.2);
-    tl.to(el.querySelector('path'), { strokeDashoffset: 0, duration: 0.22, ease: 'power2.out' }, 10.62 + i * 0.2);
+  [8.75, 9.25].forEach((T) => tl.fromTo('#flash', { autoAlpha: 0.7 }, { autoAlpha: 0, duration: 0.22, ease: 'power2.out', immediateRender: false }, T));
+  at('#p2', 0, 40 * KY);
+  tl.fromTo('#p2', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 8.9);
+  leave('#p2', 9.86);
+  // 03 · on gère tout : le Defender et ses légendes
+  scene('#st3', 10.0, 12.05);
+  stepHead('#st3', 10.0, 12.0);
+  const dW = V ? 72 : 56, dY = V ? 7 : 6;
+  car('#def', dW, 0, dY);
+  driveIn('#def', 10.02, -W, 0, 0.7);
+  const items = ['Annonces', 'Appels', 'Visites', 'Essais', 'Négociation', 'Carte grise'];
+  const pts = [[-0.28, -0.1], [0.05, -0.32], [0.3, -0.05], [-0.36, 0.22], [0.12, 0.2], [0.38, 0.28]];
+  const labs = V ? [[-30, 36], [-30, 42], [-30, 48], [8, 36], [8, 42], [8, 48]]
+                 : [[-58, -8], [-58, 4], [-58, 16], [46, -8], [46, 4], [46, 16]];
+  $('#cos').innerHTML = items.map((t) => `<div class="c co"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/><path d="M7 12.4l3.2 3.2L17 8.8"/></svg><span>${t}</span></div>`).join('');
+  const dH = dW * (618 / 952);
+  $('#lines').setAttribute('viewBox', `0 0 ${W} ${H}`);
+  $('#lines').innerHTML = items.map((_, i) => {
+    const px = W / 2 + u(pts[i][0] * dW), py = H / 2 + u(dY + pts[i][1] * dH);
+    const lx = W / 2 + u(labs[i][0] + (V ? -1 : labs[i][0] < 0 ? 12 : -1)), ly = H / 2 + u(labs[i][1]);
+    return `<path pathLength="1" d="M${px} ${py} L${px} ${ly} L${lx} ${ly}"/><circle cx="${px}" cy="${py}" r="${u(0.7)}"/>`;
+  }).join('');
+  $$('.co').forEach((c, i) => {
+    const left = !V && labs[i][0] < 0;
+    gsap.set(c, { xPercent: left ? -100 : 0, yPercent: -50, x: u(labs[i][0] + (left ? 12 : 0)), y: u(labs[i][1]) });
+    const T = 10.5 + i * 0.2;
+    tl.fromTo($$('#lines path')[i], { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, T);
+    tl.fromTo($$('#lines circle')[i], { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.3, ease: 'back.out(3)' }, T);
+    tl.fromTo(c, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, T + 0.2);
   });
-  leave(['#road', '#carT', '.pills'], 11.88);
-  // 04 · paiement sécurisé
-  step('#st4', 12.0, 14.0);
-  at('#lock', 0, 9); at('#ring', 0, 9);
-  gsap.set('#shackle', { y: -16 });
-  tl.fromTo('#lock', { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, 12.3);
-  $$('.bill').forEach((el, i) => {
-    const a = (i / 9) * Math.PI * 2 + 0.4, R = Math.max(W, H) * 0.62;
-    at(el, 0, 0);
-    tl.fromTo(el, { autoAlpha: 1, x: Math.cos(a) * R, y: Math.sin(a) * R, rotate: (i % 2 ? 1 : -1) * (40 + i * 9), scale: 1.15, filter: 'blur(16px)' },
-      { x: 0, y: u(9), rotate: (i % 2 ? 1 : -1) * 6, scale: 0.25, filter: 'blur(1px)', duration: 0.72, ease: 'power3.in' }, 12.08 + i * 0.05);
-    tl.to(el, { autoAlpha: 0, duration: 0.06 }, 12.8 + i * 0.05 - 0.02);
-  });
-  tl.to('#shackle', { y: 0, duration: 0.12, ease: 'power4.in' }, 12.88);
-  tl.to('#lock', { scale: 1.1, duration: 0.07, yoyo: true, repeat: 1, ease: 'power2.out' }, 13.0);
-  tl.fromTo('#ring', { autoAlpha: 0.9, scale: 0.7 }, { autoAlpha: 0, scale: 1.9, duration: 0.7, ease: 'expo.out' }, 13.0);
-  at('#lab4', 0, 32);
-  reveal('#lab4', 13.1, 0.03, 0.5);
-  leave(['#lock', '#lab4'], 13.88);
+  driveOut('#def', 11.86, W);
+  leave(['#lines', '#cos'], 11.86);
+  // 04 · paiement : la clé tombe, le virement arrive
+  scene('#st4', 12.0, 14.05);
+  stepHead('#st4', 12.0, 14.0);
+  at('#pay', V ? 6 : 14 * KX, V ? 20 : 8, { transformPerspective: u(140) });
+  tl.fromTo('#pay', { autoAlpha: 0, y: u(V ? 30 : 18), rotationX: -30, filter: 'blur(10px)' }, { autoAlpha: 1, y: u(V ? 20 : 8), rotationX: 0, filter: 'blur(0px)', duration: 0.7, ease: 'expo.out' }, 12.6);
+  count('#payv', 12.7, 13.3, 0, 18400, (n) => `${fr(Math.round(n / 50) * 50)} €`, 'power3.out');
+  tl.fromTo('#pay .prog i', { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, 12.7);
+  at('#key', V ? -22 : -24 * KX, V ? 2 : 6);
+  tl.fromTo('#key', { autoAlpha: 1, y: -H * 0.7, rotate: -70, filter: 'blur(18px)' }, { y: u(V ? 2 : 6), rotate: -18, filter: 'blur(0px)', duration: 0.5, ease: 'power3.in' }, 12.0);
+  tl.to('#key', { y: `-=${u(2.4)}`, rotate: -14, duration: 0.14, ease: 'power2.out', yoyo: true, repeat: 1 }, 12.5);
+  leave(['#pay', '#key'], 13.86);
 
-  // ---------- 5. LA PREUVE PAR LES CHIFFRES (14 – 17 s) ----------
-  scene('#s5', 14.0, 17.2);
-  at('#five', 0, -16);
-  tl.fromTo('#five', { autoAlpha: 0, scale: 1.35, filter: 'blur(12px)' }, { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 0.5, ease: 'expo.out' }, 14.0);
-  count($('#five'), 14.0, 14.48, 0, 5, (n) => n.toFixed(1).replace('.', ','), 'power2.out');
-  at('#stars', 0, 10);
-  $$('#stars svg').forEach((el, i) => tl.fromTo(el, { scale: 0, rotate: -40 }, { scale: 1, rotate: 0, duration: 0.38, ease: 'back.out(2.6)', transformOrigin: '50% 50%' }, 14.5 + i * 0.125));
-  at('#lab5', 0, 19.5);
-  tl.fromTo('#lab5', { autoAlpha: 0, y: u(23) }, { autoAlpha: 1, y: u(19.5), duration: 0.45, ease: 'expo.out' }, 14.88);
-  count($('#n43'), 14.9, 15.3, 0, 43, fr, 'power2.out');
-  at('#quote', 0, 28.5);
-  reveal('#quote', 15.0, 0.05);
-  at('#author', 0, 35.5);
-  reveal('#author', 15.15, 0.03, 0.45);
-  leave(['#five', '#stars', '#lab5', '#quote', '#author'], 15.38);
-  at('#ttl5', 0, -25);
-  reveal('#ttl5', 15.45, 0.05);
-  at('#tiles', 0, 3, { transformPerspective: u(120) });
-  $$('.tile').forEach((el, i) => tl.fromTo(el, { autoAlpha: 0, y: u(12), rotationX: -60 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 0.5, ease: 'expo.out', transformPerspective: u(120) }, 15.5 + i * 0.25));
-  count($('#t1'), 15.5, 16.0, 990, 0, (n) => `${fr(n)} €`, 'power2.out');
-  count($('#t2'), 15.75, 16.2, 0, 400, (n) => `${fr(n)}<small>m²</small>`, 'power2.out');
-  count($('#t3'), 16.0, 16.4, 3, 48, (n) => `3–${Math.round(n)}<small>mois</small>`, 'power2.out');
-  at('#code', 0, 27);
-  tl.fromTo('#bar i', { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 0.3, ease: 'expo.out', stagger: 0.006 }, 16.05);
-  tl.fromTo('.est', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 16.2);
-  tl.to(['#ttl5', '#tiles', '#code'], { scale: 0.2, autoAlpha: 0, filter: 'blur(10px)', duration: 0.28, ease: 'power3.in' }, 16.66);
+  // ---------- 5. LA PREUVE (14 – 17 s) ----------
+  scene('#s5', 14.0, 17.0);
+  at('#five', 0, -14 * KY);
+  tl.fromTo('#five', { autoAlpha: 0, scale: 1.25, filter: 'blur(16px)' }, { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 0.6, ease: 'expo.out' }, 14.0);
+  count('#five', 14.0, 14.5, 0, 5, (n) => n.toFixed(1).replace('.', ','), 'power2.out');
+  at('#stars', 0, 8 * KY);
+  $$('#stars svg').forEach((s, i) => tl.fromTo(s, { autoAlpha: 0, y: u(2), scale: 0.6 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.4, ease: 'expo.out', transformOrigin: '50% 50%' }, 14.5 + i * 0.125));
+  at('#n43w', 0, 15 * KY);
+  tl.fromTo('#n43w', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 14.85);
+  count('#n43', 14.85, 15.25, 0, 43, fr, 'power2.out');
+  at('#quote', 0, 24 * KY);
+  reveal('#quote', 14.95, 0.06, 0.7);
+  at('#author', 0, 31 * KY);
+  tl.fromTo('#author', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 15.15);
+  leave(['#five', '#stars', '#n43w', '#quote', '#author'], 15.36);
+  car('#slk', V ? 84 : 62, 0, -9 * KY);
+  driveIn('#slk', 15.45, -W, 0, 0.75);
+  at('#specs', 0, 24 * KY, { width: u(V ? 86 : 96) });
+  $$('.spec').forEach((s, i) => tl.fromTo(s, { autoAlpha: 0, y: u(4) }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'expo.out' }, 15.75 + i * 0.25));
+  tl.fromTo('#specs', { borderTopColor: 'rgba(20,20,20,0)' }, { borderTopColor: 'rgba(20,20,20,.3)', duration: 0.4 }, 15.7);
+  count('#sp1', 15.75, 16.25, 990, 0, (n) => `${fr(n)} €`, 'power2.out');
+  count('#sp2', 16.0, 16.45, 0, 400, (n) => `${fr(n)}<small>m²</small>`, 'power2.out');
+  count('#sp3', 16.25, 16.6, 3, 48, (n) => `3–${Math.round(n)}<small>mois</small>`, 'power2.out');
+  tl.to(['#slk', '#specs'], { scale: 1.6, filter: 'blur(24px)', autoAlpha: 0, duration: 0.25, ease: 'power3.in' }, 16.75);
 
-  // ---------- 6. CTA (16,85 – 20 s) ----------
-  scene('#s6', 16.85);
-  tl.fromTo('#s6 .disc', { clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(80% at 50% 50%)', duration: 0.34, ease: 'expo.inOut' }, 16.85);
-  at('#logoC', 0, -31);
-  tl.fromTo('#logoC', { autoAlpha: 0, scale: 0.82, filter: 'blur(12px)' }, { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 0.6, ease: 'expo.out' }, 17.1);
-  at('#cta', 0, 0);
-  reveal('#cta .r1', 17.25, 0.05);
-  reveal('#cta .r2', 17.45, 0.06);
-  at('#btn', 0, 22);
-  tl.fromTo('#btn', { autoAlpha: 0, y: u(28) }, { autoAlpha: 1, y: u(22), duration: 0.5, ease: 'expo.out' }, 17.7);
-  tl.to('#btn', { scale: 0.94, duration: 0.07, ease: 'power2.in' }, 18.18).to('#btn', { scale: 1, duration: 0.5, ease: 'back.out(3)' }, 18.25);
-  tl.fromTo('.rip', { scale: 0, autoAlpha: 0.8 }, { scale: 2.6, autoAlpha: 0, duration: 0.55, ease: 'expo.out' }, 18.25);
-  at('#url', 0, 32);
-  reveal('#url', 17.9, 0.05, 0.5);
-  at('#tel', 0, 39.5);
-  tl.fromTo('#tel', { autoAlpha: 0, y: u(44) }, { autoAlpha: 1, y: u(39.5), duration: 0.5, ease: 'expo.out' }, 18.05);
-  tl.to('#fx', { autoAlpha: 0, duration: 0.2 }, 16.9);
+  // ---------- 6. CTA (17 – 20 s) ----------
+  scene('#s6', 17.0);
+  tl.fromTo('#hall', { scale: 1.16 }, { scale: 1.04, duration: 2.2, ease: 'power2.out' }, 17.0);
+  tl.fromTo('#flash', { autoAlpha: 0.6 }, { autoAlpha: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, 17.0);
+  at('#logoC', 0, -32 * KY);
+  tl.fromTo('#logoC', { autoAlpha: 0, clipPath: 'inset(0% 50% 0% 50%)' }, { autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.8, ease: 'expo.inOut' }, 17.1);
+  at('#cta', 0, -2);
+  reveal('#cta .g', 17.3, 0.05, 0.75);
+  reveal('#cta .s', 17.5, 0.07, 0.8);
+  at('#btn', 0, 19 * KY);
+  tl.fromTo('#btn', { autoAlpha: 0, y: u(19 * KY + 4) }, { autoAlpha: 1, y: u(19 * KY), duration: 0.6, ease: 'expo.out' }, 17.8);
+  tl.fromTo('#btn .fill', { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'expo.inOut' }, 18.2);
+  tl.to('#btn', { color: '#641413', borderColor: 'rgba(243,241,237,1)', duration: 0.3 }, 18.3);
+  at('#url', 0, 29 * KY);
+  tl.fromTo('#url', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 18.0);
+  at('#tel', 0, 35 * KY);
+  tl.fromTo('#tel', { autoAlpha: 0, y: u(35 * KY + 3) }, { autoAlpha: 1, y: u(35 * KY), duration: 0.5, ease: 'expo.out' }, 18.1);
   tl.set({}, {}, 20);
   window.render(0);
 };
@@ -455,8 +467,10 @@ window.render = (t) => {
   tl.seek(t, false);
   dyn.forEach((f) => f(t));
   const k = Math.min(t, FREEZE);
-  $('#cam').style.transform = `scale(${1.022 + 0.016 * Math.sin(k * 0.62)}) rotate(${0.32 * Math.sin(k * 0.41)}deg)`;
-  $$('#fx svg').forEach((el, i) => { el.style.transform = `translate(calc(-50% + ${u(+el.dataset.x) + Math.sin(k * 0.5 + i) * u(2.4)}px), calc(-50% + ${u(+el.dataset.y) + Math.cos(k * 0.4 + i) * u(2)}px)) rotate(${+el.dataset.r + k * (i % 2 ? 6 : -5)}deg)`; el.style.left = '50%'; el.style.top = '50%'; });
+  $('#cam').style.transform = `scale(${1.02 + 0.014 * Math.sin(k * 0.55)}) rotate(${0.22 * Math.sin(k * 0.37)}deg)`;
+  // clés floues au premier plan : elles dérivent lentement, en coin, comme un objet tout près de l'objectif
+  $('#d1').style.transform = `translate(calc(-50% + ${u(-46) + Math.sin(k * 0.45) * u(3)}px), calc(-50% + ${u(-44 * KY) + Math.cos(k * 0.35) * u(2.4)}px)) rotate(${-28 + k * 3}deg)`;
+  $('#d2').style.transform = `translate(calc(-50% + ${u(48) + Math.cos(k * 0.4) * u(3)}px), calc(-50% + ${u(46 * KY) + Math.sin(k * 0.5) * u(2)}px)) rotate(${152 - k * 2.5}deg)`;
   const f = Math.floor(t * 60);
   $('#grain').style.transform = `translate(${((f * 37) % 120) - 60}px, ${((f * 53) % 120) - 60}px)`;
 };
