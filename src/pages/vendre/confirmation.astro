@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site.js';
+---
+<Base title="Demande envoyée" description="Votre demande d’estimation a bien été préparée." noindex>
+  <section class="phero" id="top">
+    <div class="phero__media"><img src="/media/bureaux.webp" alt="" /></div>
+    <div class="phero__inner">
+      <span class="label">Merci</span>
+      <h1 class="js-chars">Demande envoyée</h1>
+      <p>Pensez à valider l’e-mail dans votre messagerie. Nous analysons votre véhicule et vous rappelons sous 24 h ouvrées avec une estimation et une proposition de mandat de vente.</p>
+      <div class="ctas">
+        <a class="cta cta--fill" href="/"><span>Retour à l’accueil</span><b aria-hidden="true">→</b></a>
+        <a class="cta" href={site.phoneHref}><span>{site.phone}</span><b aria-hidden="true">→</b></a>
+      </div>
+    </div>
+  </section>
+</Base>

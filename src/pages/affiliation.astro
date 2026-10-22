@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.js';
+---
+<Base title="Affiliation : 50 € par voiture recommandée" description="Recommandez Next Drive à un proche qui vend sa voiture : 50 € pour vous à la signature de son mandat de vente. Dépôt-vente à Saint-Béron, Savoie.">
+  <section class="phero" id="top">
+    <div class="phero__media"><video data-autoplay muted loop playsinline preload="none" poster="/loops/golf.webp" data-src="/loops/golf.mp4" aria-hidden="true"></video></div>
+    <div class="phero__inner">
+      <span class="label">Programme d’affiliation</span>
+      <h1 class="js-chars">50 € par voiture</h1>
+      <p>Un proche veut vendre sa voiture ? Recommandez-nous. Dès qu’il signe son mandat de vente chez Next Drive, nous vous versons 50 €.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <ol class="aff">
+      <li class="js-reveal"><i>01</i><b>Vous nous présentez</b><span>le vendeur et sa voiture avec le formulaire ci-dessous.</span></li>
+      <li class="js-reveal"><i>02</i><b>Nous le contactons</b><span>pour une estimation gratuite et sans engagement.</span></li>
+      <li class="js-reveal"><i>03</i><b>Vous touchez 50 €</b><span>à la signature de son mandat de vente.</span></li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <form class="form" data-mailto={site.email} data-subject="Affiliation — nouvelle recommandation">
+      <fieldset class="js-reveal">
+        <legend>Vous</legend>
+        <div class="field"><label for="a-nom">Nom et prénom</label><input id="a-nom" name="parrain" data-label="Parrain" autocomplete="name" required /></div>
+        <div class="field"><label for="a-tel">Téléphone</label><input id="a-tel" name="parrain_tel" data-label="Téléphone du parrain" type="tel" autocomplete="tel" required /></div>
+        <div class="field field--full"><label for="a-mail">E-mail</label><input id="a-mail" name="parrain_email" data-label="E-mail du parrain" type="email" autocomplete="email" required /></div>
+      </fieldset>
+      <fieldset class="js-reveal">
+        <legend>La personne recommandée</legend>
+        <div class="field"><label for="f-nom">Nom et prénom</label><input id="f-nom" name="filleul" data-label="Personne recommandée" required /></div>
+        <div class="field"><label for="f-tel">Téléphone</label><input id="f-tel" name="filleul_tel" data-label="Téléphone recommandé" type="tel" required /></div>
+        <div class="field field--full"><label for="f-auto">Sa voiture <small>(marque, modèle, année)</small></label><input id="f-auto" name="vehicule" data-label="Véhicule" /></div>
+      </fieldset>
+      <label class="consent js-reveal"><input type="checkbox" name="consent" required /> <span>Je confirme que la personne recommandée est d’accord pour être contactée par Next Drive. Voir la <a href="/confidentialite">politique de confidentialité</a>.</span></label>
+      <div class="js-reveal"><button class="cta cta--fill" type="submit"><span>Envoyer ma recommandation</span><b aria-hidden="true">→</b></button></div>
+    </form>
+  </section>
+
+  <style>
+    .aff { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.4vw; }
+    .aff li { display: grid; gap: 10px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .aff i { font-style: normal; font-size: var(--fs-label); font-weight: 600; letter-spacing: .2em; color: var(--accent); }
+    .aff b { font-family: var(--serif); font-weight: 400; font-size: var(--fs-h3); line-height: 1.1; }
+    .aff span { color: var(--muted); }
+    @media (max-width: 900px) { .aff { grid-template-columns: 1fr; } }
+  </style>
+</Base>

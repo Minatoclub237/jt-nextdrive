@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+const rows = [
+  ['Hero, plongée sur le capot', 'Mixkit, vidéo n° 35577 « Blue luxury sports car in a garage » — recolorée', 'Mixkit Free License', 'https://mixkit.co/free-stock-video/blue-luxury-sports-car-in-a-garage-35577/'],
+  ['Hero, habitacle', 'Mixkit, vidéo n° 64 « Accelerating car dashboard »', 'Mixkit Free License', 'https://mixkit.co/free-stock-video/accelerating-car-dashboard-64/'],
+  ['Service garantie mécanique', 'Mixkit, vidéo n° 65 « Closeup of sports car engine »', 'Mixkit Free License', 'https://mixkit.co/free-stock-video/closeup-of-sports-car-engine-65/'],
+  ['« Zéro frais », vue du dessus', 'Carlos Valenzuela, « Ferrari 480, Mexico 2019 » (Wikimedia Commons) — recadrée, détourée, assombrie', 'CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Ferrari_480,_Mexico_2019p1.jpg'],
+];
+---
+<Base title="Crédits" description="Crédits des photos et vidéos du site Next Drive.">
+  <section class="section" id="top" style="padding-top:calc(var(--hdr-h) + 12vh)">
+    <div class="prose" style="max-width:1100px">
+      <span class="label">Médias</span>
+      <h1 style="font-size:var(--fs-h2)">Crédits</h1>
+      <p>Les photos du showroom, des véhicules en stock et les extraits vidéo sont la propriété de JT NEXT DRIVE SAS (fiche Google, Instagram @nextdrive_savoie, annonces). Les médias de tiers ci-dessous sont utilisés selon leur licence ; la version modifiée de l’image sous CC BY-SA reste diffusée sous la même licence.</p>
+      <div style="overflow-x:auto;margin-top:4vh">
+        <table class="cred">
+          <thead><tr><th>Emplacement</th><th>Source</th><th>Licence</th></tr></thead>
+          <tbody>{rows.map(([u, s, l, h]) => <tr><td>{u}</td><td><a href={h} rel="noopener">{s}</a></td><td>{l}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p>Site conçu avec Astro, GSAP et Lenis. Polices Instrument Serif et Inter (licence SIL Open Font).</p>
+    </div>
+  </section>
+  <style>
+    .cred { border-collapse: collapse; width: 100%; min-width: 700px; font-size: 16px; }
+    .cred th, .cred td { text-align: left; vertical-align: top; padding: 14px 18px 14px 0; border-bottom: 1px solid var(--line); }
+    .cred th { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  </style>
+</Base>

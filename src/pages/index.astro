@@ -1,0 +1,181 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/home.css';
+import { site, services, steps, pillars } from '../data/site.js';
+import stock from '../data/stock.json';
+import reviews from '../data/reviews.json';
+
+const trail = stock.slice(0, 12).map((v) => `/stock/${v.ref}/01-s.webp`);
+const makes = [...new Set(stock.map((v) => v.marque))];
+const clip = (t, n = 250) => (t.length > n ? t.slice(0, t.lastIndexOf(' ', n)) + '…' : t);
+---
+<Base description="Next Drive, dépôt-vente de voitures d’occasion à Saint-Béron (Savoie) : estimation gratuite, photos pro, visites, paiement sécurisé et garantie. Vendez sans frais, achetez en confiance.">
+  <link slot="head" rel="preload" as="image" href="/hero/a-001.webp" fetchpriority="high" />
+
+  <!-- 1. HERO : la caméra plonge sur le capot puis entre dans l'habitacle, au rythme du scroll -->
+  <section class="hero" id="top">
+    <div class="hero__stage">
+      <canvas class="hero__canvas" id="heroCanvas" data-a="105" data-b="30" style="background-image:url(/hero/a-001.webp)" aria-hidden="true"></canvas>
+      <div class="hero__shade"></div>
+      <div class="hero__veil" id="heroVeil"></div>
+
+      <h1 class="hero__title js-words">Vendez votre voiture<br /><em>sans contraintes</em></h1>
+      <div class="hero__foot">
+        <p class="hero__sub">Confiez-nous votre véhicule : estimation, photos, annonces, visites et paiement sécurisé. Vous ne vous occupez de rien.</p>
+        <div class="ctas" style="justify-content:center">
+          <a class="cta cta--fill" href="/vendre"><span>Estimation gratuite</span><b aria-hidden="true">→</b></a>
+          <a class="cta" href="/stock"><span>Voir le stock</span><b aria-hidden="true">→</b></a>
+        </div>
+      </div>
+
+      <div class="trail" id="trail" aria-hidden="true" data-src={JSON.stringify(trail)}></div>
+      <p class="hero__statement js-words" aria-hidden="true">Sans frais. Sans stress. <br />Au meilleur prix.</p>
+
+      <!-- 2. MÉTHODE : le cadre s'ouvre depuis le centre -->
+      <div class="approach" id="methode">
+        <div class="approach__frame">
+          <video class="approach__media" id="approachVideo" muted loop playsinline preload="none" poster="/loops/showroom.webp" data-src="/loops/showroom.mp4" aria-hidden="true"></video>
+          <div class="approach__shade"></div>
+          <div class="approach__content">
+            <div class="approach__head">
+              <h2 class="approach__title js-chars">Votre voiture vendue<br />en quatre étapes</h2>
+              <svg class="approach__arc" viewBox="0 0 60 300" preserveAspectRatio="none" aria-hidden="true"><path d="M8 4 C 62 80, 62 220, 8 296" pathLength="100" /></svg>
+            </div>
+            <ol class="steps">
+              {steps.map((s) => <li><i>{s.n}</i><b>{s.title}</b><span>{s.text}</span></li>)}
+            </ol>
+            <div class="approach__bottom">
+              <div class="marquee" aria-label={`Marques en stock : ${makes.join(', ')}`}>
+                <div class="marquee__track" aria-hidden="true">
+                  {[...makes, ...makes].map((m) => <span>{m}</span>)}
+                </div>
+              </div>
+              <a class="cta cta--fill" href="/vendre"><span>Faire estimer ma voiture</span><b aria-hidden="true">→</b></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="cue" id="cue" type="button"><span>Faites défiler</span><i></i></button>
+    </div>
+  </section>
+
+  <!-- 3. POURQUOI NEXT DRIVE : la carte reste, les vidéos s'ouvrent depuis le centre -->
+  <section class="pillars" aria-label="Pourquoi Next Drive">
+    <div class="pillars__sticky">
+      <div class="pillars__bg" aria-hidden="true">
+        {pillars.map((p) => <img src={`/media/${p.video.split('/').pop()}-blur.webp`} alt="" loading="lazy" />)}
+      </div>
+      <div class="pillars__card">
+        {pillars.map((p) => <video data-autoplay muted loop playsinline preload="none" poster={`${p.video}.webp`} data-src={`${p.video}.mp4`} aria-hidden="true"></video>)}
+      </div>
+    </div>
+    <div class="pillars__list">
+      {pillars.map((p, i) => (
+        <article class="pillar">
+          <span class="pillar__count">0{i + 1} <i>/ 0{pillars.length}</i></span>
+          <h2 class="pillar__title js-chars">{p.title}</h2>
+          <p>{p.text}</p>
+          <a class="cta" href="/vendre"><span>Vendre ma voiture</span><b aria-hidden="true">→</b></a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 4. LE SHOWROOM : le texte s'allume lettre à lettre -->
+  <section class="manifesto">
+    <div class="manifesto__text">
+      <p class="manifesto__big js-chars js-chars--long">Un showroom de 400 m² à Saint-Béron, pensé pour montrer chaque voiture sous son meilleur jour.</p>
+      <p class="manifesto__small">Préparation, photos professionnelles et présentation soignée : c’est ici que votre voiture rencontre son acheteur. Visites sur rendez-vous, du mardi au samedi, à quelques minutes du Pont-de-Beauvoisin et des Échelles.</p>
+      <a class="cta" href="/contact"><span>Préparer ma visite</span><b aria-hidden="true">→</b></a>
+    </div>
+    <figure class="manifesto__img"><img src="/media/defender.webp" alt="Land Rover Defender présenté dans le showroom Next Drive" loading="lazy" /></figure>
+  </section>
+
+  <!-- 5. SERVICES : chaque image monte et recouvre la précédente -->
+  <section class="services" id="services" aria-label="Nos services">
+    <div class="services__list">
+      {services.map((s, i) => (
+        <article class="svc">
+          <span class="label">Service {String(i + 1).padStart(2, '0')}</span>
+          <h2 class="svc__title js-chars">{s.title}</h2>
+          <p>{s.text}</p>
+          <a class="cta" href={`/services#${s.key}`}><span>En savoir plus</span><b aria-hidden="true">→</b></a>
+        </article>
+      ))}
+    </div>
+    <div class="services__media" aria-hidden="true">
+      <div class="services__sticky">
+        {services.map((s) => (
+          <figure class="svc-img">
+            {s.media.video
+              ? <video data-autoplay muted loop playsinline preload="none" poster={`${s.media.video}.webp`} data-src={`${s.media.video}.mp4`}></video>
+              : <img src={`${s.media.img}.webp`} alt="" loading="lazy" />}
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ZÉRO FRAIS : la voiture traverse, les voisines vont moins vite -->
+  <section class="standard">
+    <h2 class="standard__word js-chars">Zéro frais</h2>
+    <div class="standard__road" aria-hidden="true">
+      <img class="standard__side standard__side--l" src="/img/top-left.webp" alt="" loading="lazy" />
+      <img class="standard__car" src="/img/top-car.webp" alt="" loading="lazy" />
+      <img class="standard__side standard__side--r" src="/img/top-right.webp" alt="" loading="lazy" />
+    </div>
+    <div class="standard__end">
+      <h2 class="standard__word js-chars">pour le vendeur</h2>
+      <p>Vous confiez votre voiture, nous faisons le reste : estimation, préparation, photos, annonces, visites et démarches. Sans frais pour vous.</p>
+    </div>
+  </section>
+
+  <!-- 7. STOCK → VENDRE : la section suivante recouvre la précédente -->
+  <section class="cover cover--a" id="stock-teaser">
+    <div class="cover__media"><img src="/media/tesla.webp" alt="Tesla Model Y présentée dans le showroom Next Drive" loading="lazy" /></div>
+    <div class="cover__content">
+      <h2 class="cover__title js-chars">Notre stock</h2>
+      <p>{stock.length} voitures d’occasion disponibles, préparées et garanties, de {Math.min(...stock.map((v) => v.prix)).toLocaleString('fr-FR')} € à {Math.max(...stock.map((v) => v.prix)).toLocaleString('fr-FR')} €.</p>
+      <a class="cta" href="/stock"><span>Voir les véhicules</span><b aria-hidden="true">→</b></a>
+    </div>
+  </section>
+  <section class="cover cover--b">
+    <div class="cover__media"><img src="/media/facade.webp" alt="Le bâtiment Next Drive à Saint-Béron" loading="lazy" /></div>
+    <div class="cover__content">
+      <h2 class="cover__title js-chars">Vous vendez ?</h2>
+      <p>Une estimation gratuite et sans engagement, en une heure en moyenne. Décrivez votre voiture, on vous rappelle.</p>
+      <a class="cta cta--fill" href="/vendre"><span>Obtenir mon estimation</span><b aria-hidden="true">→</b></a>
+    </div>
+  </section>
+
+  <!-- 8. AVIS : bande horizontale pilotée par le scroll -->
+  <section class="reviews" aria-label="Avis Google">
+    <div class="reviews__pin">
+      <div class="reviews__head">
+        <h2 class="js-chars">Ils nous ont confié<br />leur voiture</h2>
+        <div class="reviews__score">
+          <b>{site.rating.value}</b>
+          <div><div class="stars" aria-hidden="true">★★★★★</div><span class="label">{site.rating.count} avis Google</span></div>
+        </div>
+      </div>
+      <div class="reviews__track" id="reviewsTrack">
+        {reviews.map((r) => (
+          <article class="review">
+            <div class="stars" aria-label={`${r.etoiles} étoiles sur 5`}>★★★★★</div>
+            <p>« {clip(r.texte)} »</p>
+            <footer><b>{r.auteur}</b><span>{r.visite || r.date}</span></footer>
+          </article>
+        ))}
+        <a class="review review--cta" href={site.mapsUrl} target="_blank" rel="noopener">
+          <p>Lire les {site.rating.count} avis sur Google</p>
+          <span class="label" style="color:#fff">Fiche Next Drive →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/home.js';
+  </script>
+</Base>

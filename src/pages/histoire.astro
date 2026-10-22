@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.js';
+const chapters = [
+  { k: 'Les débuts', t: 'Une passion, un constat', p: 'Next Drive est né de deux passionnés d’automobile, Jérémy et Téo — le « JT » de JT Next Drive. Leur constat : vendre sa voiture entre particuliers, c’est souvent du stress, du temps perdu et des acheteurs peu fiables.', img: '/media/golf-v' },
+  { k: 'Le modèle', t: 'Le sérieux d’un pro, le prix d’un particulier', p: 'Ils ont repensé l’intermédiation : un service premium qui apporte la tranquillité d’un professionnel tout en gardant la rentabilité d’une vente entre particuliers. Sans frais pour le vendeur.', img: '/media/bureaux' },
+  { k: 'Aujourd’hui', t: 'Un showroom de 400 m² à Saint-Béron', p: `Depuis ${site.founded}, vendeurs et acheteurs se croisent dans notre showroom de l’Avant-Pays savoyard. ${site.rating.count} avis Google, tous à 5 étoiles : transparence, sécurité et accompagnement restent notre ligne.`, img: '/media/facade' },
+];
+---
+<Base title="Notre histoire" description="Next Drive, fondé à Saint-Béron (Savoie) par Jérémy et Téo, réinvente la vente de voitures d’occasion entre particuliers : dépôt-vente sans frais, paiement sécurisé, accompagnement de A à Z.">
+  <section class="phero" id="top">
+    <div class="phero__media"><img src="/media/facade.webp" alt="Le bâtiment Next Drive, 106 chemin de la Girondière à Saint-Béron" /></div>
+    <div class="phero__inner">
+      <span class="label">JT Next Drive · depuis {site.founded}</span>
+      <h1 class="js-chars">Notre histoire</h1>
+      <p>Deux passionnés, un showroom, une promesse : rendre la vente d’une voiture d’occasion simple, sûre et rentable.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="story">
+      {chapters.map((c, i) => (
+        <article class="story__item">
+          <figure class="story__media"><img src={`${c.img}.webp`} alt="" loading="lazy" class="js-parallax" data-speed="8" /></figure>
+          <div class="story__text">
+            <span class="label">0{i + 1} · {c.k}</span>
+            <h2 class="js-chars">{c.t}</h2>
+            <p>{c.p}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="team">
+      <div class="js-reveal"><span class="label">Président</span><h3>{site.president}</h3></div>
+      <div class="js-reveal"><span class="label">Directeur général</span><h3>{site.dg}</h3></div>
+      <div class="js-reveal"><span class="label">Note Google</span><h3>{site.rating.value} / 5 · {site.rating.count} avis</h3></div>
+    </div>
+  </section>
+
+  <style>
+    .story { display: grid; gap: 16vh; }
+    .story__item { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: center; }
+    .story__item:nth-child(even) .story__media { order: 2; }
+    .story__media { margin: 0; aspect-ratio: 4 / 5; overflow: hidden; max-height: 80vh; }
+    .story__media img { width: 100%; height: 118%; object-fit: cover; }
+    .story__text { display: grid; gap: 18px; max-width: 540px; }
+    .story__text h2 { font-size: var(--fs-h2); }
+    .story__text p { color: #d4d0cb; font-size: max(17px, 1.15vw); }
+    .team { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3vw; border-top: 1px solid var(--line); padding-top: 5vh; }
+    .team h3 { font-size: var(--fs-h3); margin-top: 10px; }
+    @media (max-width: 900px) {
+      .story__item, .team { grid-template-columns: 1fr; gap: 4vh; }
+      .story__item:nth-child(even) .story__media { order: 0; }
+    }
+  </style>
+</Base>

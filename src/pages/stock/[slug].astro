@@ -1,0 +1,147 @@
+---
+import Base from '../../layouts/Base.astro';
+import CarCard from '../../components/CarCard.astro';
+import stock from '../../data/stock.json';
+import { site } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return stock.map((v) => ({ params: { slug: v.slug }, props: { v } }));
+}
+const { v } = Astro.props;
+const fmt = (n) => n.toLocaleString('fr-FR');
+const name = `${v.marque} ${v.modele}`;
+const photos = Array.from({ length: v.photos }, (_, i) => String(i + 1).padStart(2, '0'));
+const similar = [...stock].filter((x) => x.ref !== v.ref).sort((a, b) => Math.abs(a.prix - v.prix) - Math.abs(b.prix - v.prix)).slice(0, 3);
+const specs = [
+  ['Année', v.annee], ['Kilométrage', `${fmt(v.km)} km`], ['Énergie', v.energie], ['Boîte', v.boite],
+  ['Puissance', v.puissance], ['Puissance fiscale', v.cv], ['Couleur', v.couleur], ['Mise en circulation', v.mec.replace(/-/g, '/')],
+].filter(([, x]) => x);
+const mail = `mailto:${site.email}?subject=${encodeURIComponent(`${name} ${v.annee} — réf. ${v.ref}`)}&body=${encodeURIComponent(`Bonjour,\n\nJe suis intéressé(e) par la ${name} ${v.version} (${v.annee}, ${fmt(v.km)} km, ${fmt(v.prix)} €, réf. ${v.ref}).\nJe souhaite organiser une visite.\n\nMerci,\n`)}`;
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'Car', name: `${name} ${v.version}`, brand: { '@type': 'Brand', name: v.marque }, model: v.modele,
+  vehicleModelDate: String(v.annee), mileageFromOdometer: { '@type': 'QuantitativeValue', value: v.km, unitCode: 'KMT' },
+  fuelType: v.energie, vehicleTransmission: v.boite, color: v.couleur, itemCondition: 'https://schema.org/UsedCondition',
+  image: photos.slice(0, 6).map((p) => `${site.url}/stock/${v.ref}/${p}.webp`), sku: v.ref,
+  offers: { '@type': 'Offer', price: v.prix, priceCurrency: 'EUR', availability: 'https://schema.org/InStock', seller: { '@id': `${site.url}/#dealer` }, url: `${site.url}/stock/${v.slug}` },
+}];
+const desc = `${name} ${v.version} ${v.annee}, ${fmt(v.km)} km, ${v.energie.toLowerCase()}, boîte ${v.boite.toLowerCase()} : ${fmt(v.prix)} € chez Next Drive à Saint-Béron (73). Garantie, financement, livraison.`;
+---
+<Base title={`${name} ${v.annee} — ${fmt(v.prix)} €`} description={desc} image={`/stock/${v.ref}/01.webp`} schema={schema}>
+  <section class="veh" id="top">
+    <div class="veh__gallery" id="gallery">
+      <div class="veh__main">
+        <img id="mainImg" src={`/stock/${v.ref}/01.webp`} alt={`${name} ${v.annee}, photo 1`} width="1200" height="900" fetchpriority="high" />
+        <button class="veh__nav veh__nav--prev" type="button" aria-label="Photo précédente">←</button>
+        <button class="veh__nav veh__nav--next" type="button" aria-label="Photo suivante">→</button>
+        <span class="veh__counter" id="counter">1 / {photos.length}</span>
+      </div>
+      <div class="veh__thumbs" role="list">
+        {photos.map((p, i) => (
+          <button type="button" role="listitem" class="veh__thumb" data-i={i} aria-label={`Photo ${i + 1}`} aria-current={i === 0 ? 'true' : undefined}>
+            <img src={`/stock/${v.ref}/${p}-s.webp`} alt="" loading="lazy" width="160" height="120" />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="veh__info">
+      <a class="veh__back" href="/stock">← Tout le stock</a>
+      <span class="label">Réf. {v.ref} · Dépôt-vente</span>
+      <h1>{name}</h1>
+      <p class="veh__ver">{v.version}</p>
+      <p class="veh__price">{fmt(v.prix)} €</p>
+      <dl class="veh__specs">{specs.map(([k, x]) => <div><dt>{k}</dt><dd>{x}</dd></div>)}</dl>
+      <div class="ctas">
+        <a class="cta cta--fill" href={mail}><span>Demander une visite</span><b aria-hidden="true">→</b></a>
+        <a class="cta" href={site.phoneHref}><span>{site.phone}</span><b aria-hidden="true">→</b></a>
+      </div>
+      <ul class="veh__trust">
+        <li>Garantie mécanique de 3 à 48 mois</li><li>Paiement sécurisé par séquestre</li><li>Financement : crédit, LOA, LLD</li><li>Livraison partout en France</li><li>Carte grise faite sur place</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section veh__details">
+    {v.bref && <p class="veh__lead js-reveal">{v.bref}</p>}
+    <div class="veh__cols">
+      <div class="prose js-reveal">
+        <h2>Description</h2>
+        {v.description.filter((l) => l !== v.bref).map((l) => <p>{l}</p>)}
+      </div>
+      {v.equipements.length > 0 && (
+        <div class="js-reveal">
+          <h2 class="veh__h2">Équipements</h2>
+          <ul class="veh__equip">{v.equipements.map((e) => <li>{e}</li>)}</ul>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head"><span class="label">Dans la même gamme de prix</span><h2 class="js-chars">Vous aimerez aussi</h2></div>
+    <div class="cars">{similar.map((x) => <CarCard v={x} />)}</div>
+  </section>
+
+  <style>
+    .veh { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 4vw; padding: calc(var(--hdr-h) + 5vh) var(--gut) 6vh; align-items: start; }
+    .veh__main { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--panel-2); }
+    .veh__main img { width: 100%; height: 100%; object-fit: cover; transition: opacity .35s; }
+    .veh__nav { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(11,11,12,.72); font-size: 20px; display: grid; place-items: center; transition: background .3s; }
+    .veh__nav:hover { background: var(--brand); }
+    .veh__nav--prev { left: 14px; } .veh__nav--next { right: 14px; }
+    .veh__counter { position: absolute; right: 14px; bottom: 14px; background: rgba(11,11,12,.8); padding: 6px 12px; font-size: 14px; font-weight: 600; }
+    .veh__thumbs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+    .veh__thumb { aspect-ratio: 4 / 3; overflow: hidden; opacity: .55; transition: opacity .3s; outline-offset: -2px; }
+    .veh__thumb[aria-current='true'], .veh__thumb:hover { opacity: 1; }
+    .veh__thumb[aria-current='true'] { outline: 2px solid var(--accent); }
+    .veh__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .veh__info { position: sticky; top: calc(var(--hdr-h) + 2vh); display: grid; gap: 16px; }
+    .veh__back { font-size: 15px; color: var(--muted); }
+    .veh__back:hover { color: var(--ink); }
+    .veh h1 { font-size: clamp(44px, 4.4vw, 76px); }
+    .veh__ver { color: var(--muted); }
+    .veh__price { font-family: var(--serif); font-size: clamp(40px, 3.4vw, 58px); color: var(--ink); }
+    .veh__specs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 6px 0 10px; border-top: 1px solid var(--line); }
+    .veh__specs div { padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .veh__specs dt { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .veh__specs dd { margin: 2px 0 0; font-size: 17px; }
+    .veh__trust { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; color: #d4d0cb; font-size: 15px; }
+    .veh__trust li::before { content: '—'; color: var(--accent); margin-right: 10px; }
+    .veh__lead { font-family: var(--serif); font-size: clamp(26px, 2.3vw, 38px); line-height: 1.3; max-width: 1100px; margin-bottom: 8vh; }
+    .veh__cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 6vw; }
+    .veh__h2 { font-size: var(--fs-h3); margin-bottom: 18px; }
+    .veh__equip { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 28px; font-size: 15px; color: #d4d0cb; }
+    .veh__equip li { break-inside: avoid; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    @media (max-width: 1000px) {
+      .veh { grid-template-columns: 1fr; }
+      .veh__info { position: static; }
+      .veh__thumbs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .veh__cols { grid-template-columns: 1fr; }
+      .veh__equip { columns: 1; }
+    }
+  </style>
+  <script>
+    import { $, $$ } from '../../scripts/core.js';
+    const main = $('#mainImg');
+    const thumbs = $$('.veh__thumb');
+    const base = main.src.replace(/\d+\.webp$/, '');
+    let i = 0;
+    function show(n) {
+      i = (n + thumbs.length) % thumbs.length;
+      const src = `${base}${String(i + 1).padStart(2, '0')}.webp`;
+      main.style.opacity = '0.25';
+      const im = new Image();
+      im.onload = () => { main.src = src; main.alt = main.alt.replace(/\d+$/, String(i + 1)); main.style.opacity = '1'; };
+      im.src = src;
+      thumbs.forEach((t, k) => t.toggleAttribute('aria-current', k === i));
+      $('#counter').textContent = `${i + 1} / ${thumbs.length}`;
+    }
+    thumbs.forEach((t) => t.addEventListener('click', () => show(+t.dataset.i)));
+    $('.veh__nav--prev').addEventListener('click', () => show(i - 1));
+    $('.veh__nav--next').addEventListener('click', () => show(i + 1));
+    addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
+    let x0 = null;
+    main.parentElement.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    main.parentElement.addEventListener('touchend', (e) => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(i + (dx < 0 ? 1 : -1)); x0 = null; });
+  </script>
+</Base>

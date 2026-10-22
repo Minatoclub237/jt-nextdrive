@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.js';
+const map = `https://www.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=15&hl=fr&output=embed`;
+---
+<Base title="Contact et accès au showroom" description={`Next Drive, ${site.street}, ${site.postal} ${site.city}. Tél. ${site.phone}. Visites sur rendez-vous du mardi au samedi.`}>
+  <section class="phero" id="top">
+    <div class="phero__media"><img src="/media/tesla.webp" alt="Le showroom Next Drive" /></div>
+    <div class="phero__inner">
+      <span class="label">Saint-Béron · Savoie</span>
+      <h1 class="js-chars">Nous contacter</h1>
+      <p>Une question sur un véhicule, une estimation, une visite ? Appelez-nous ou écrivez-nous, on répond vite.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="ct">
+      <div class="ct__info">
+        <div class="js-reveal"><span class="label">Téléphone</span><p class="ct__big"><a href={site.phoneHref}>{site.phone}</a></p></div>
+        <div class="js-reveal"><span class="label">E-mail</span><p><a href={`mailto:${site.email}`}>{site.email}</a></p></div>
+        <div class="js-reveal"><span class="label">Showroom</span><p>{site.street}<br />{site.postal} {site.city} ({site.region})</p><p><a href={site.mapsUrl} target="_blank" rel="noopener">Ouvrir dans Google Maps →</a></p></div>
+        <div class="js-reveal"><span class="label">Horaires · visites sur rendez-vous</span><ul>{site.hours.map((h) => <li><span>{h.days}</span><span>{h.time}</span></li>)}</ul></div>
+      </div>
+      <form class="form ct__form js-reveal" data-mailto={site.email} data-subject="Message depuis le site">
+        <fieldset>
+          <legend>Écrivez-nous</legend>
+          <div class="field"><label for="c-nom">Nom</label><input id="c-nom" name="nom" data-label="Nom" autocomplete="name" required /></div>
+          <div class="field"><label for="c-tel">Téléphone</label><input id="c-tel" name="tel" data-label="Téléphone" type="tel" autocomplete="tel" /></div>
+          <div class="field field--full"><label for="c-mail">E-mail</label><input id="c-mail" name="email" data-label="E-mail" type="email" autocomplete="email" required /></div>
+          <div class="field field--full"><label for="c-msg">Message</label><textarea id="c-msg" name="message" data-label="Message" required></textarea></div>
+        </fieldset>
+        <label class="consent"><input type="checkbox" name="consent" required /> <span>J’accepte que Next Drive utilise ces informations pour me répondre. Voir la <a href="/confidentialite">politique de confidentialité</a>.</span></label>
+        <div><button class="cta cta--fill" type="submit"><span>Envoyer</span><b aria-hidden="true">→</b></button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="ct__map" aria-label="Plan d’accès" id="map" data-src={map}>
+    <button class="ct__mapbtn" type="button" id="mapBtn">
+      <span class="label">Plan d’accès</span>
+      <span class="ct__maptitle">Afficher la carte</span>
+      <small>Chargée depuis Google Maps, qui peut déposer des cookies.</small>
+    </button>
+  </section>
+  <script>
+    const box = document.getElementById('map');
+    document.getElementById('mapBtn').addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = box.dataset.src;
+      f.title = 'Plan d’accès au showroom Next Drive à Saint-Béron';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      box.replaceChildren(f);
+    });
+  </script>
+
+  <style>
+    .ct { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6vw; align-items: start; }
+    .ct__info { display: grid; gap: 34px; }
+    .ct__info p { margin-top: 8px; font-size: 18px; }
+    .ct__info a:hover { color: var(--accent); }
+    .ct__big { font-family: var(--serif); font-size: clamp(38px, 3.4vw, 60px) !important; line-height: 1; }
+    .ct__info ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; max-width: 360px; }
+    .ct__info li { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 6px 0; }
+    .ct__map { height: 62vh; background: var(--panel-2) url(/media/facade.webp) center / cover; position: relative; }
+    .ct__map iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(1) invert(.92) contrast(.9); }
+    .ct__mapbtn { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 12px; background: rgba(11,11,12,.72); text-align: center; transition: background .4s; }
+    .ct__mapbtn:hover { background: rgba(11,11,12,.55); }
+    .ct__maptitle { font-family: var(--serif); font-size: var(--fs-h3); }
+    .ct__mapbtn small { color: var(--muted); font-size: 14px; }
+    @media (max-width: 900px) { .ct { grid-template-columns: 1fr; } }
+  </style>
+</Base>

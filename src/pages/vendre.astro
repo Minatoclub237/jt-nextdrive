@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, steps } from '../data/site.js';
+---
+<Base title="Vendre sa voiture sans frais — estimation gratuite" description="Faites estimer gratuitement votre voiture par Next Drive à Saint-Béron (Savoie). Dépôt-vente sans frais pour le vendeur : photos, annonces, visites, négociation et paiement sécurisé.">
+  <section class="phero" id="top">
+    <div class="phero__media"><video data-autoplay muted loop playsinline preload="none" poster="/loops/c3.webp" data-src="/loops/c3.mp4" aria-hidden="true"></video></div>
+    <div class="phero__inner">
+      <span class="label">Estimation gratuite · sans engagement</span>
+      <h1 class="js-chars">Vendre votre voiture</h1>
+      <p>Décrivez votre véhicule en deux minutes. Notre équipe analyse le marché et vous rappelle avec une estimation juste, en une heure en moyenne.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <ol class="vsteps">
+      {steps.map((s) => <li class="js-reveal"><i>{s.n}</i><b>{s.title}</b><span>{s.text}</span></li>)}
+    </ol>
+  </section>
+
+  <section class="section" id="formulaire">
+    <form class="form" data-mailto={site.email} data-subject="Demande d’estimation" data-redirect="/vendre/confirmation">
+      <fieldset class="js-reveal">
+        <legend>Vos coordonnées</legend>
+        <div class="field"><label for="prenom">Prénom</label><input id="prenom" name="prenom" data-label="Prénom" autocomplete="given-name" required /></div>
+        <div class="field"><label for="nom">Nom</label><input id="nom" name="nom" data-label="Nom" autocomplete="family-name" required /></div>
+        <div class="field"><label for="email">E-mail</label><input id="email" name="email" data-label="E-mail" type="email" autocomplete="email" required /></div>
+        <div class="field"><label for="tel">Téléphone</label><input id="tel" name="tel" data-label="Téléphone" type="tel" autocomplete="tel" required /></div>
+      </fieldset>
+      <fieldset class="js-reveal">
+        <legend>Votre véhicule</legend>
+        <div class="field"><label for="marque">Marque</label><input id="marque" name="marque" data-label="Marque" placeholder="ex. Peugeot" required /></div>
+        <div class="field"><label for="modele">Modèle</label><input id="modele" name="modele" data-label="Modèle" placeholder="ex. 3008" required /></div>
+        <div class="field"><label for="annee">Année</label><input id="annee" name="annee" data-label="Année" type="number" min="1950" max="2027" inputmode="numeric" required /></div>
+        <div class="field"><label for="km">Kilométrage</label><input id="km" name="km" data-label="Kilométrage" type="number" min="0" inputmode="numeric" placeholder="km" required /></div>
+        <div class="field"><label for="immat">Immatriculation <small>(facultatif)</small></label><input id="immat" name="immat" data-label="Immatriculation" placeholder="AB-123-CD" /></div>
+        <div class="field"><label for="prix">Prix souhaité <small>(facultatif)</small></label><input id="prix" name="prix" data-label="Prix souhaité" type="number" min="0" inputmode="numeric" placeholder="€" /></div>
+        <div class="field field--full"><label for="message">Options, état, entretien <small>(facultatif)</small></label><textarea id="message" name="message" data-label="Message"></textarea></div>
+      </fieldset>
+      <label class="consent js-reveal"><input type="checkbox" name="consent" required /> <span>J’accepte que Next Drive utilise ces informations pour me recontacter au sujet de mon estimation. Voir la <a href="/confidentialite">politique de confidentialité</a>.</span></label>
+      <div class="js-reveal"><button class="cta cta--fill" type="submit"><span>Demander mon estimation</span><b aria-hidden="true">→</b></button></div>
+      <p class="form__note">Le bouton ouvre votre messagerie avec la demande prête à envoyer. Vous préférez parler ? Appelez-nous au <a href={site.phoneHref}>{site.phone}</a>.</p>
+    </form>
+  </section>
+
+  <style>
+    .vsteps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.4vw; }
+    .vsteps li { display: grid; gap: 10px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .vsteps i { font-style: normal; font-size: var(--fs-label); font-weight: 600; letter-spacing: .2em; color: var(--accent); }
+    .vsteps b { font-family: var(--serif); font-weight: 400; font-size: var(--fs-h3); line-height: 1.1; }
+    .vsteps span { color: var(--muted); }
+    @media (max-width: 900px) { .vsteps { grid-template-columns: 1fr 1fr; } }
+  </style>
+</Base>

@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.js';
+---
+<Base title="Politique de confidentialité" description="Comment Next Drive collecte et protège vos données personnelles (RGPD).">
+  <section class="section" id="top" style="padding-top:calc(var(--hdr-h) + 12vh)">
+    <div class="prose">
+      <span class="label">RGPD</span>
+      <h1 style="font-size:var(--fs-h2)">Politique de confidentialité</h1>
+
+      <h2>Responsable du traitement</h2>
+      <p>{site.legal}, {site.street}, {site.postal} {site.city} — <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+      <h2>Données collectées</h2>
+      <p>Uniquement ce que vous saisissez dans nos formulaires (estimation, contact, affiliation) : nom, prénom, téléphone, e-mail, informations sur votre véhicule et votre message. Les formulaires préparent un e-mail que vous envoyez vous-même depuis votre messagerie : aucune donnée n’est stockée sur ce site.</p>
+
+      <h2>Finalités et base légale</h2>
+      <p>Répondre à votre demande, établir une estimation, organiser une visite ou une vente, et verser une prime d’affiliation. Base légale : votre consentement et l’exécution de mesures précontractuelles prises à votre demande.</p>
+
+      <h2>Durée de conservation</h2>
+      <p>Trois ans à compter de notre dernier échange, puis suppression. Les pièces liées à une vente sont conservées selon les obligations légales (comptables et fiscales).</p>
+
+      <h2>Destinataires</h2>
+      <p>Uniquement l’équipe Next Drive et, pour une vente, les partenaires strictement nécessaires (financement, garantie, immatriculation). Vos données ne sont jamais vendues.</p>
+
+      <h2>Cookies et services tiers</h2>
+      <p>Ce site ne dépose aucun cookie publicitaire ni de mesure d’audience. La carte de la page Contact n’est chargée que si vous cliquez dessus : Google peut alors déposer ses propres cookies. Les liens vers Instagram et Google ouvrent ces services, soumis à leurs propres politiques.</p>
+
+      <h2>Vos droits</h2>
+      <p>Vous pouvez demander l’accès, la rectification, l’effacement ou la limitation de vos données, et vous opposer à leur traitement, en écrivant à <a href={`mailto:${site.email}`}>{site.email}</a>. En cas de désaccord, vous pouvez saisir la CNIL (cnil.fr).</p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,14 @@
+---
+const { v } = Astro.props;
+const fmt = (n) => n.toLocaleString('fr-FR');
+---
+<a class="car js-reveal" href={`/stock/${v.slug}`}
+  data-marque={v.marque} data-prix={v.prix} data-km={v.km} data-annee={v.annee} data-energie={v.energie} data-boite={v.boite}>
+  <div class="car__img">
+    <img src={`/stock/${v.ref}/01-s.webp`} alt={`${v.marque} ${v.modele} ${v.annee}`} loading="lazy" decoding="async" width="640" height="480" />
+    <span class="car__price">{fmt(v.prix)} €</span>
+  </div>
+  <h3>{v.marque} {v.modele}</h3>
+  <p class="car__ver">{v.version}</p>
+  <p class="car__specs"><span>{v.annee}</span><span>{fmt(v.km)} km</span><span>{v.energie}</span><span>{v.boite}</span></p>
+</a>

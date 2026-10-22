@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import { services } from '../data/site.js';
+const args = ['Vente au meilleur prix', 'Nous gérons tout', 'Paiement sécurisé', 'Accompagnement personnalisé', 'Démarches administratives incluses', 'Acheteurs qualifiés'];
+---
+<Base title="Services : dépôt-vente, garantie, financement, carte grise" description="Intermédiation, dépôt-vente, paiement sécurisé par séquestre, livraison partout en France, garantie mécanique 3 à 48 mois, financement LOA/LLD et carte grise : tous les services de Next Drive.">
+  <section class="phero" id="top">
+    <div class="phero__media"><video data-autoplay muted loop playsinline preload="none" poster="/loops/defender.webp" data-src="/loops/defender.mp4" aria-hidden="true"></video></div>
+    <div class="phero__inner">
+      <span class="label">De l’estimation à l’immatriculation</span>
+      <h1 class="js-chars">Nos services</h1>
+      <p>Une gamme complète pour vendre ou acheter une voiture d’occasion sans prise de tête. Vous gardez la main, nous faisons le travail.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="srv">
+      {services.map((s, i) => (
+        <article class="srv__item" id={s.key}>
+          <figure class="srv__media">
+            {s.media.video
+              ? <video data-autoplay muted loop playsinline preload="none" poster={`${s.media.video}.webp`} data-src={`${s.media.video}.mp4`} aria-hidden="true"></video>
+              : <img src={`${s.media.img}.webp`} alt="" loading="lazy" class="js-parallax" data-speed="6" />}
+          </figure>
+          <div class="srv__text">
+            <span class="label">Service {String(i + 1).padStart(2, '0')}</span>
+            <h2 class="js-chars">{s.title}</h2>
+            <p>{s.text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="section__head"><span class="label">Pourquoi Next Drive</span><h2 class="js-chars">Six engagements</h2></div>
+    <ul class="args">{args.map((a, i) => <li class="js-reveal"><i>0{i + 1}</i>{a}</li>)}</ul>
+    <div class="ctas" style="margin-top:6vh"><a class="cta cta--fill" href="/vendre"><span>Estimation gratuite</span><b aria-hidden="true">→</b></a><a class="cta" href="/stock"><span>Voir le stock</span><b aria-hidden="true">→</b></a></div>
+  </section>
+
+  <style>
+    .srv { display: grid; gap: 14vh; }
+    .srv__item { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: center; scroll-margin-top: calc(var(--hdr-h) + 4vh); }
+    .srv__item:nth-child(even) .srv__media { order: 2; }
+    .srv__media { margin: 0; aspect-ratio: 4 / 5; overflow: hidden; background: var(--panel-2); max-height: 82vh; }
+    .srv__media img, .srv__media video { width: 100%; height: 115%; object-fit: cover; }
+    .srv__media video { height: 100%; }
+    .srv__text { display: grid; gap: 18px; max-width: 520px; }
+    .srv__text h2 { font-size: var(--fs-h2); }
+    .srv__text p { color: #d4d0cb; font-size: max(17px, 1.15vw); }
+    .args { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 3vw; }
+    .args li { display: flex; gap: 18px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: var(--fs-h3); line-height: 1.1; }
+    .args i { font-style: normal; font-family: var(--sans); font-size: var(--fs-label); font-weight: 600; letter-spacing: .2em; color: var(--accent); }
+    @media (max-width: 900px) {
+      .srv__item { grid-template-columns: 1fr; gap: 4vh; }
+      .srv__item:nth-child(even) .srv__media { order: 0; }
+      .args { grid-template-columns: 1fr; }
+    }
+  </style>
+</Base>

@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import CarCard from '../../components/CarCard.astro';
+import stock from '../../data/stock.json';
+
+const makes = [...new Set(stock.map((v) => v.marque))].sort();
+const fuels = [...new Set(stock.map((v) => v.energie))].sort();
+const min = Math.min(...stock.map((v) => v.prix));
+const max = Math.max(...stock.map((v) => v.prix));
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'ItemList', name: 'Voitures d’occasion en stock chez Next Drive',
+  numberOfItems: stock.length,
+  itemListElement: stock.map((v, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://next-drive.fr/stock/${v.slug}`, name: `${v.marque} ${v.modele} ${v.annee}` })),
+}];
+---
+<Base title="Voitures d’occasion en stock" description={`${stock.length} voitures d’occasion en dépôt-vente chez Next Drive à Saint-Béron (Savoie), de ${min.toLocaleString('fr-FR')} € à ${max.toLocaleString('fr-FR')} €. Garantie, financement, livraison partout en France.`} schema={schema}>
+  <section class="phero" id="top">
+    <div class="phero__media"><video data-autoplay muted loop playsinline preload="none" poster="/loops/showroom.webp" data-src="/loops/showroom.mp4" aria-hidden="true"></video></div>
+    <div class="phero__inner">
+      <span class="label">Dépôt-vente · Saint-Béron</span>
+      <h1 class="js-chars">Notre stock</h1>
+      <p>{stock.length} voitures préparées dans notre showroom, garanties de 3 à 48 mois, finançables et livrables partout en France. Visites et essais sur rendez-vous.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <form class="filters" id="filters" aria-label="Filtrer les véhicules">
+      <div class="field"><label for="f-marque">Marque</label>
+        <select id="f-marque" name="marque"><option value="">Toutes</option>{makes.map((m) => <option>{m}</option>)}</select></div>
+      <div class="field"><label for="f-prix">Budget max.</label>
+        <select id="f-prix" name="prix"><option value="">Tous</option>{[8000, 10000, 15000, 20000, 30000, 50000].map((p) => <option value={p}>{p.toLocaleString('fr-FR')} €</option>)}</select></div>
+      <div class="field"><label for="f-km">Kilométrage max.</label>
+        <select id="f-km" name="km"><option value="">Tous</option>{[50000, 100000, 150000, 200000].map((k) => <option value={k}>{k.toLocaleString('fr-FR')} km</option>)}</select></div>
+      <div class="field"><label for="f-energie">Énergie</label>
+        <select id="f-energie" name="energie"><option value="">Toutes</option>{fuels.map((f) => <option>{f}</option>)}</select></div>
+      <div class="field"><label for="f-boite">Boîte</label>
+        <select id="f-boite" name="boite"><option value="">Toutes</option><option>Manuelle</option><option>Automatique</option></select></div>
+      <div class="field"><label for="f-tri">Trier par</label>
+        <select id="f-tri" name="tri"><option value="prix-desc">Prix décroissant</option><option value="prix-asc">Prix croissant</option><option value="km-asc">Kilométrage</option><option value="annee-desc">Plus récentes</option></select></div>
+    </form>
+    <p class="filters__count" id="count" aria-live="polite"><b>{stock.length}</b> véhicules</p>
+    <div class="cars" id="cars">
+      {stock.map((v) => <CarCard v={v} />)}
+    </div>
+    <p class="filters__empty" id="empty" hidden>Aucun véhicule ne correspond. <a href="/vendre">Dites-nous ce que vous cherchez</a>, on vous prévient dès qu’il arrive.</p>
+  </section>
+
+  <style>
+    .filters { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; margin-bottom: 26px; }
+    .filters__count { color: var(--muted); margin-bottom: 30px; }
+    .filters__count b { color: var(--ink); font-size: 20px; }
+    .filters__empty { padding: 8vh 0; font-family: var(--serif); font-size: var(--fs-h3); }
+    .filters__empty a { text-decoration: underline; }
+    @media (max-width: 1100px) { .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .filters { grid-template-columns: 1fr 1fr; } }
+  </style>
+  <script>
+    import { ScrollTrigger, $, $$ } from '../../scripts/core.js';
+    const form = $('#filters');
+    const grid = $('#cars');
+    const cards = $$('.car', grid);
+    function apply() {
+      const f = Object.fromEntries(new FormData(form));
+      const [key, dir] = (f.tri || 'prix-desc').split('-');
+      let n = 0;
+      const shown = cards.filter((c) => {
+        const d = c.dataset;
+        const ok = (!f.marque || d.marque === f.marque) && (!f.prix || +d.prix <= +f.prix) && (!f.km || +d.km <= +f.km)
+          && (!f.energie || d.energie === f.energie) && (!f.boite || d.boite === f.boite);
+        c.hidden = !ok;
+        if (ok) n++;
+        return ok;
+      });
+      shown.sort((a, b) => (dir === 'asc' ? 1 : -1) * (+a.dataset[key] - +b.dataset[key])).forEach((c) => grid.append(c));
+      $('#count').innerHTML = `<b>${n}</b> véhicule${n > 1 ? 's' : ''}`;
+      $('#empty').hidden = n > 0;
+      ScrollTrigger.refresh();
+    }
+    form.addEventListener('change', apply);
+  </script>
+</Base>
