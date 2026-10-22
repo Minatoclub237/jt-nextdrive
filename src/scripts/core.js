@@ -73,7 +73,11 @@ const hdr = $('#hdr');
 const bar = $('#progressBar');
 let inFooter = false;
 const setCompact = () => hdr?.classList.toggle('is-compact', scrollY > 30 && !inFooter);
-ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => { if (bar) bar.style.transform = `scaleX(${s.progress.toFixed(4)})`; setCompact(); } });
+ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => {
+  if (bar) bar.style.transform = `scaleX(${s.progress.toFixed(4)})`;
+  setCompact();
+  hdr?.classList.toggle('is-hidden', mobile() && s.direction === 1 && scrollY > innerHeight * 0.25);
+} });
 ScrollTrigger.create({ trigger: '.footer__hero', start: 'top 45%', end: 'bottom 10%', onToggle: (s) => { inFooter = s.isActive; setCompact(); } });
 
 const fab = $('#callFab');
