@@ -77,8 +77,6 @@ body::after {
 .hdr__nav a:hover, .hdr__nav a[aria-current='page'] { color: var(--ink); }
 .hdr__nav a:hover::after, .hdr__nav a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
 .hdr__right { display: flex; align-items: center; gap: 24px; }
-.hdr__tel { font-size: 16px; font-weight: 600; white-space: nowrap; transition: color .3s; }
-.hdr__tel:hover { color: var(--accent); }
 .hdr__cta { padding: 0 20px; letter-spacing: .14em; white-space: nowrap; }
 .hdr__menu { display: none; align-items: center; gap: 14px; min-height: 44px; }
 .hdr__menu-label { font-size: var(--fs-label); font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
@@ -177,6 +175,21 @@ body::after {
 .car__specs { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 15px; color: #d4d0cb; }
 .car__specs span + span::before { content: '·'; margin-right: 16px; color: var(--muted); }
 
+/* ============ BOUTON D'APPEL ============ */
+.callfab {
+  position: fixed; right: var(--gut); bottom: 24px; z-index: 65; display: flex; align-items: center; gap: 12px;
+  min-height: 58px; padding: 0 24px 0 8px; border-radius: 999px; background: var(--brand); color: #fff;
+  font-size: 17px; font-weight: 600; letter-spacing: .02em; box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  transition: background-color .3s, transform .5s cubic-bezier(.7,0,.2,1), opacity .4s;
+}
+.callfab:hover { background: var(--brand-deep); }
+.callfab i { position: relative; width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,.16); display: grid; place-items: center; }
+.callfab i::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255,255,255,.7); animation: ring 2.4s ease-out infinite; }
+.callfab svg { width: 19px; height: 19px; fill: currentColor; }
+.callfab.is-hidden, .menu-open .callfab { opacity: 0; transform: translateY(140%); pointer-events: none; }
+@keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(1.7); opacity: 0; } }
+.reduced .callfab i::after { animation: none; }
+
 /* ============ FOOTER ============ */
 .footer { position: relative; z-index: 3; background: #050506; overflow: hidden; }
 .footer__hero { position: relative; min-height: 92vh; min-height: 92svh; display: grid; align-content: center; }
@@ -223,6 +236,7 @@ body::after {
 /* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
   :root { --hdr-h: 72px; }
+  .callfab { bottom: 16px; min-height: 54px; font-size: 16px; padding-right: 20px; }
   .hdr__mark { height: 48px; }
   .hdr.is-compact .hdr__mark { height: 42px; }
   .menu__inner { grid-template-columns: 1fr; align-content: center; gap: 5vh; }
@@ -230,7 +244,6 @@ body::after {
   .form fieldset { grid-template-columns: 1fr; }
   .footer__bar { flex-direction: column; align-items: flex-start; }
 }
-@media (max-width: 1380px) { .hdr__tel { display: none; } }
 @media (max-width: 1180px) {
   .hdr__nav { display: none; }
   .hdr__right { margin-left: auto; }

@@ -76,6 +76,9 @@ const setCompact = () => hdr?.classList.toggle('is-compact', scrollY > 30 && !in
 ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => { if (bar) bar.style.transform = `scaleX(${s.progress.toFixed(4)})`; setCompact(); } });
 ScrollTrigger.create({ trigger: '.footer__hero', start: 'top 45%', end: 'bottom 10%', onToggle: (s) => { inFooter = s.isActive; setCompact(); } });
 
+const fab = $('#callFab');
+if (fab) ScrollTrigger.create({ trigger: '.footer__main', start: 'top bottom', onToggle: (s) => fab.classList.toggle('is-hidden', s.isActive) });
+
 const menu = $('#menu');
 const menuBtn = $('#menuBtn');
 const menuLinks = $$('.menu__list a');

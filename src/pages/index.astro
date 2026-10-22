@@ -4,9 +4,14 @@ import '../styles/home.css';
 import { site, services, steps, pillars } from '../data/site.js';
 import stock from '../data/stock.json';
 import reviews from '../data/reviews.json';
+import { siAudi, siBmw, siCitroen, siFiat, siFord, siKia, siLandrover, siMazda, siNissan, siOpel, siPeugeot, siRenault, siSeat, siToyota, siVolkswagen } from 'simple-icons';
 
 const trail = stock.slice(0, 12).map((v) => `/stock/${v.ref}/01-s.webp`);
 const makes = [...new Set(stock.map((v) => v.marque))];
+// logos des marques en stock (simple-icons) ; Mercedes n'y figure plus : étoile redessinée
+const icons = { Audi: siAudi, BMW: siBmw, Citroen: siCitroen, Fiat: siFiat, Ford: siFord, Kia: siKia, 'Land Rover': siLandrover, Mazda: siMazda, Nissan: siNissan, Opel: siOpel, Peugeot: siPeugeot, Renault: siRenault, Seat: siSeat, Toyota: siToyota, Volkswagen: siVolkswagen };
+const mercedes = '<circle cx="12" cy="12" r="10.9" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M12 1.4 13.39 11.2 21.18 17.3 12 13.6 2.82 17.3 10.61 11.2Z"/>';
+const logos = makes.map((m) => ({ id: m.toLowerCase().replace(/\W+/g, '-'), name: m, svg: m === 'Mercedes' ? mercedes : icons[m] && `<path d="${icons[m].path}"/>` })).filter((l) => l.svg);
 const clip = (t, n = 250) => (t.length > n ? t.slice(0, t.lastIndexOf(' ', n)) + '…' : t);
 ---
 <Base description="Next Drive, dépôt-vente de voitures d’occasion à Saint-Béron (Savoie) : estimation gratuite, photos pro, visites, paiement sécurisé et garantie. Vendez sans frais, achetez en confiance.">
@@ -45,9 +50,12 @@ const clip = (t, n = 250) => (t.length > n ? t.slice(0, t.lastIndexOf(' ', n)) +
               {steps.map((s) => <li><i>{s.n}</i><b>{s.title}</b><span>{s.text}</span></li>)}
             </ol>
             <div class="approach__bottom">
-              <div class="marquee" aria-label={`Marques en stock : ${makes.join(', ')}`}>
+              <div class="marquee" role="img" aria-label={`Marques en stock : ${makes.join(', ')}`}>
+                <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+                  {logos.map((l) => <symbol id={`logo-${l.id}`} viewBox="0 0 24 24" set:html={l.svg} />)}
+                </svg>
                 <div class="marquee__track" aria-hidden="true">
-                  {[...makes, ...makes].map((m) => <span>{m}</span>)}
+                  {[...logos, ...logos].map((l) => <span class="marquee__logo" title={l.name}><svg><use href={`#logo-${l.id}`} /></svg></span>)}
                 </div>
               </div>
               <a class="cta cta--fill" href="/vendre"><span>Faire estimer ma voiture</span><b aria-hidden="true">→</b></a>

@@ -63,7 +63,6 @@ const ld = [dealer, ...schema];
       </ul>
     </nav>
     <div class="hdr__right">
-      <a class="hdr__tel" href={site.phoneHref}>{site.phone}</a>
       <a class="cta cta--fill hdr__cta" href="/vendre"><span>Estimation gratuite</span><b aria-hidden="true">→</b></a>
       <button class="hdr__menu" id="menuBtn" aria-expanded="false" aria-controls="menu">
         <span class="hdr__menu-label">Menu</span>
@@ -87,6 +86,11 @@ const ld = [dealer, ...schema];
       </div>
     </div>
   </div>
+
+  <a class="callfab" id="callFab" href={site.phoneHref} aria-label={`Appeler Next Drive au ${site.phone}`}>
+    <i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></i>
+    <span>{site.phone}</span>
+  </a>
 
   <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
 
