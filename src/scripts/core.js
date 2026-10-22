@@ -19,7 +19,9 @@ document.documentElement.classList.toggle('reduced', reduced);
 
 /* ---------- découpage en mots / lettres ---------- */
 function split(el, mode) {
-  el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+  // « tint » : simple coloration mot à mot, le texte reste lu normalement (pas d'aria-label)
+  const tint = mode === 'tint';
+  if (!tint) el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
   const nodes = [...el.childNodes];
   el.textContent = '';
   for (const n of nodes) {
@@ -34,15 +36,22 @@ function split(el, mode) {
       if (/^\s+$/.test(tok)) { el.append(' '); continue; }
       const w = document.createElement('span');
       w.className = 'word';
-      w.setAttribute('aria-hidden', 'true');
+      if (!tint) w.setAttribute('aria-hidden', 'true');
       if (mode === 'chars') for (const c of tok) { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; w.append(s); }
       else w.textContent = tok;
       el.append(w);
     }
   }
 }
+// pages intérieures : même révélation que l'accueil — titres lettre à lettre, paragraphes mot à mot
+if (!$('.hero')) {
+  const skip = '.car, form, .js-reveal, .js-chars, .menu, .footer, [aria-hidden="true"]';
+  $$('main h1, main h2, main h3').forEach((el) => el.closest(skip) || el.classList.add('js-chars'));
+  $$('main p').forEach((el) => el.closest(skip) || el.classList.contains('label') || !el.textContent.trim() || el.classList.add('js-tint'));
+}
 $$('.js-words').forEach((el) => split(el, 'words'));
 $$('.js-chars').forEach((el) => split(el, 'chars'));
+$$('.js-tint').forEach((el) => split(el, 'tint'));
 
 /* ---------- Lenis : scroll natif lissé, jamais de hijack ---------- */
 export let lenis = null;
@@ -65,7 +74,7 @@ const bar = $('#progressBar');
 let inFooter = false;
 const setCompact = () => hdr?.classList.toggle('is-compact', scrollY > 30 && !inFooter);
 ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => { if (bar) bar.style.transform = `scaleX(${s.progress.toFixed(4)})`; setCompact(); } });
-ScrollTrigger.create({ trigger: '.footer', start: 'top 45%', onToggle: (s) => { inFooter = s.isActive; setCompact(); } });
+ScrollTrigger.create({ trigger: '.footer__hero', start: 'top 45%', end: 'bottom 10%', onToggle: (s) => { inFooter = s.isActive; setCompact(); } });
 
 const menu = $('#menu');
 const menuBtn = $('#menuBtn');
@@ -130,16 +139,27 @@ export function charsTween(chars, opts = {}) {
   return gsap.to(chars, { keyframes: { color: [DIM, ACCENT, INK], easeEach: 'none' }, ease: 'none', duration: opts.duration ?? 0.5, stagger: opts.stagger ?? 0.08, ...opts.vars });
 }
 
+// déjà à l'écran au chargement (haut de page) : la révélation se joue seule, sinon elle suit le scroll
+const atLoad = (el) => scrollY < 20 && el.getBoundingClientRect().top < innerHeight * 0.92;
+
 export function initReveals(scope = document) {
   if (reduced) return;
   $$('.js-chars', scope).forEach((el) => {
     if (el.closest('.hero') || el.dataset.manual != null) return;
+    const chars = el.querySelectorAll('.ch');
+    if (atLoad(el)) return charsTween(chars, { stagger: Math.min(0.06, 1 / chars.length), vars: { delay: 0.2 } });
     const long = el.classList.contains('js-chars--long');
-    charsTween(el.querySelectorAll('.ch'), {
+    charsTween(chars, {
       duration: long ? 0.3 : 0.5,
       stagger: long ? 0.022 : 0.07,
       vars: { scrollTrigger: { trigger: el, start: long ? 'top 82%' : 'top 94%', end: long ? 'bottom 42%' : 'top 50%', scrub: 0.5 } },
     });
+  });
+  $$('.js-tint', scope).forEach((el) => {
+    const words = el.querySelectorAll('.word');
+    const keyframes = { color: [DIM, ACCENT, getComputedStyle(el).color], easeEach: 'none' };
+    if (atLoad(el)) return gsap.to(words, { keyframes, ease: 'none', duration: 0.5, stagger: Math.min(0.05, 1.2 / words.length), delay: 0.45 });
+    gsap.to(words, { keyframes, ease: 'none', duration: 0.5, stagger: 0.06, scrollTrigger: { trigger: el, start: 'top 90%', end: 'bottom 58%', scrub: 0.5 } });
   });
   // apparitions génériques, réversibles au scroll
   $$('.js-reveal', scope).forEach((el) => {

@@ -1,8 +1,9 @@
 ---
 import '../styles/global.css';
-import { site, nav } from '../data/site.js';
-import markRaw from '../../public/brand/mark.svg?raw';
-const mark = markRaw.replace('<svg', '<svg class="hdr__mark" aria-hidden="true" focusable="false"');
+import { site, nav, services } from '../data/site.js';
+import logoRaw from '../../public/brand/full.svg?raw';
+// vrai logo (voiture + NEXT DRIVE + VOITURES D'OCCASIONS), recadré au plus près du tracé
+const logo = (cls) => logoRaw.replace(/<svg[^>]*>/, `<svg class="${cls}" viewBox="71 54 2292 1145" aria-hidden="true" focusable="false">`);
 
 const { title, description, image = '/media/entrepot.webp', schema = [], noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', site.url).href;
@@ -55,23 +56,17 @@ const ld = [dealer, ...schema];
 <body>
   <a class="sr-only" href="#contenu">Aller au contenu</a>
   <header class="hdr" id="hdr">
-    <div class="hdr__left">
-      <a href={site.instagram} target="_blank" rel="noopener" aria-label="Instagram de Next Drive">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4Zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm6-7.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0ZM12 3.6c2.7 0 3.1 0 4.1.06 2.8.13 4.1 1.45 4.24 4.24.05 1.06.06 1.38.06 4.1s0 3.04-.06 4.1c-.13 2.78-1.43 4.1-4.24 4.24-1.06.05-1.37.06-4.1.06s-3.04 0-4.1-.06c-2.82-.13-4.1-1.47-4.24-4.24C3.6 15.04 3.6 14.72 3.6 12s0-3.04.06-4.1C3.8 5.1 5.1 3.8 7.9 3.66 8.96 3.6 9.28 3.6 12 3.6Z"/></svg>
-      </a>
-      <a href={site.phoneHref} aria-label={`Appeler Next Drive au ${site.phone}`}>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>
-      </a>
-      <a class="hdr__tel" href={site.phoneHref}>{site.phone}</a>
-    </div>
-    <a class="hdr__logo" href="/" aria-label="Next Drive — accueil">
-      <Fragment set:html={mark} />
-      <span class="hdr__word">NEXT&nbsp;DRIVE</span>
-    </a>
+    <a class="hdr__logo" href="/" aria-label="Next Drive — accueil"><Fragment set:html={logo('hdr__mark')} /></a>
+    <nav class="hdr__nav" aria-label="Navigation principale">
+      <ul>
+        {nav.slice(1).map((l) => <li><a href={l.href} aria-current={path === l.href || path.startsWith(l.href + '/') ? 'page' : undefined}>{l.label}</a></li>)}
+      </ul>
+    </nav>
     <div class="hdr__right">
-      <a class="hdr__cta" href="/vendre">Estimation gratuite</a>
+      <a class="hdr__tel" href={site.phoneHref}>{site.phone}</a>
+      <a class="cta cta--fill hdr__cta" href="/vendre"><span>Estimation gratuite</span><b aria-hidden="true">→</b></a>
       <button class="hdr__menu" id="menuBtn" aria-expanded="false" aria-controls="menu">
-        <span class="hdr__menu-label">Naviguer</span>
+        <span class="hdr__menu-label">Menu</span>
         <span class="hdr__burger" aria-hidden="true"><i></i><i></i></span>
         <span class="sr-only">Ouvrir le menu</span>
       </button>
@@ -100,6 +95,7 @@ const ld = [dealer, ...schema];
   </main>
 
   <footer class="footer" id="contact-footer">
+    <div class="footer__hero">
     <div class="footer__media" id="footerMedia" aria-hidden="true">
       <img class="footer__dim" src="/media/entrepot.webp" alt="" loading="lazy" />
       <img class="footer__lit" src="/media/entrepot.webp" alt="" loading="lazy" />
@@ -112,14 +108,37 @@ const ld = [dealer, ...schema];
         <a class="cta" href="/stock"><span>Voir le stock</span><b aria-hidden="true">→</b></a>
       </div>
     </div>
-    <div class="footer__info">
-      <div><h4>Showroom</h4><p>{site.street}<br />{site.postal} {site.city} ({site.region})</p><p><a href={site.mapsUrl} target="_blank" rel="noopener">Itinéraire →</a></p></div>
-      <div><h4>Contact</h4><ul><li><a href={site.phoneHref}>{site.phone}</a></li><li><a href={`mailto:${site.email}`}>{site.email}</a></li><li><a href={site.instagram} target="_blank" rel="noopener">Instagram @nextdrive_savoie</a></li></ul></div>
-      <div><h4>Horaires</h4><ul>{site.hours.map((h) => <li>{h.days} : {h.time}</li>)}</ul></div>
-      <div><h4>Pages</h4><ul>{nav.slice(1).map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul></div>
+    </div>
+    <div class="footer__main">
+      <div class="footer__brand">
+        <a class="footer__logo" href="/" aria-label="Next Drive — accueil"><Fragment set:html={logo('footer__mark')} /></a>
+        <p>Confiez-nous votre véhicule et profitez d’une vente sécurisée, simple et au meilleur prix. Dépôt-vente et intermédiation à Saint-Béron, en Savoie.</p>
+        <a class="footer__rating" href={site.mapsUrl} target="_blank" rel="noopener"><b>{site.rating.value}</b><span class="stars" aria-hidden="true">★★★★★</span><span>{site.rating.count} avis Google</span></a>
+        <ul class="footer__social" aria-label="Next Drive sur les réseaux">
+          <li><a href={site.instagram} target="_blank" rel="noopener" aria-label="Instagram @nextdrive_savoie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a></li>
+          <li><a href={site.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn Next Drive"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.66 4.79 6.12V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z"/></svg></a></li>
+          <li><a href={site.mapsUrl} target="_blank" rel="noopener" aria-label="Fiche Google Maps de Next Drive"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/></svg></a></li>
+        </ul>
+      </div>
+      <div><h4>Navigation</h4><ul>{nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul></div>
+      <div><h4>Services</h4><ul>{services.map((x) => <li><a href={`/services#${x.key}`}>{x.title}</a></li>)}</ul></div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href={site.phoneHref}>{site.phone}</a></li>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li>{site.street}<br />{site.postal} {site.city} ({site.region})</li>
+          <li><a class="footer__link" href={site.mapsUrl} target="_blank" rel="noopener">Itinéraire →</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Horaires</h4>
+        <ul class="footer__hours">{site.hours.map((h) => <li><span>{h.days}</span><span>{h.time}</span></li>)}</ul>
+        <p class="footer__note">Visites et essais sur rendez-vous.</p>
+      </div>
     </div>
     <div class="footer__bar">
-      <span>© 2026 {site.legal} · SIREN {site.siren}</span>
+      <p>© 2026 {site.legal} · SAS au capital de {site.capital} · SIREN {site.siren} · TVA {site.vat}</p>
       <nav aria-label="Informations légales">
         <a href="/mentions-legales">Mentions légales</a>
         <a href="/confidentialite">Confidentialité</a>

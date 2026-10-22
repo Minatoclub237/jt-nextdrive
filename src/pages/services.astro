@@ -5,7 +5,7 @@ const args = ['Vente au meilleur prix', 'Nous gérons tout', 'Paiement sécuris�
 ---
 <Base title="Services : dépôt-vente, garantie, financement, carte grise" description="Intermédiation, dépôt-vente, paiement sécurisé par séquestre, livraison partout en France, garantie mécanique 3 à 48 mois, financement LOA/LLD et carte grise : tous les services de Next Drive.">
   <section class="phero" id="top">
-    <div class="phero__media"><video data-autoplay muted loop playsinline preload="none" poster="/loops/defender.webp" data-src="/loops/defender.mp4" aria-hidden="true"></video></div>
+    <div class="phero__media"><video data-autoplay muted loop playsinline preload="none" poster="/loops/golf7-habitacle.webp" data-src="/loops/golf7-habitacle.mp4" aria-hidden="true"></video></div>
     <div class="phero__inner">
       <span class="label">De l’estimation à l’immatriculation</span>
       <h1 class="js-chars">Nos services</h1>
@@ -18,9 +18,7 @@ const args = ['Vente au meilleur prix', 'Nous gérons tout', 'Paiement sécuris�
       {services.map((s, i) => (
         <article class="srv__item" id={s.key}>
           <figure class="srv__media">
-            {s.media.video
-              ? <video data-autoplay muted loop playsinline preload="none" poster={`${s.media.video}.webp`} data-src={`${s.media.video}.mp4`} aria-hidden="true"></video>
-              : <img src={`${s.media.img}.webp`} alt="" loading="lazy" class="js-parallax" data-speed="6" />}
+            <img src={`${s.page}.webp`} alt="" loading="lazy" class="js-parallax" data-speed="6" />
           </figure>
           <div class="srv__text">
             <span class="label">Service {String(i + 1).padStart(2, '0')}</span>

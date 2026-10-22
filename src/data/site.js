@@ -17,6 +17,7 @@ export const site = {
   // lien « laisser un avis » direct à demander au client (Google Business Profile) ; en attendant : la fiche
   reviewUrl: 'https://www.google.com/maps?cid=11611372354840118659',
   instagram: 'https://www.instagram.com/nextdrive_savoie/',
+  linkedin: 'https://www.linkedin.com/in/next-drive-35a28541b/',
   rating: { value: '5,0', count: 43 },
   showroom: '400 m²',
   hours: [
@@ -49,19 +50,19 @@ export const nav = [
 ];
 
 export const services = [
-  { key: 'intermediation', title: 'Intermédiation', media: { video: '/loops/c3' },
+  { key: 'intermediation', title: 'Intermédiation', media: { video: '/loops/c3' }, page: '/media/marco-polo-showroom',
     text: 'Nous sommes le tiers de confiance entre vendeur et acheteur : visites, essais, négociation et paperasse, tout passe par nous.' },
-  { key: 'depot', title: 'Dépôt-vente', media: { video: '/loops/defender' },
+  { key: 'depot', title: 'Dépôt-vente', media: { video: '/loops/defender' }, page: '/media/rs6-avant',
     text: 'Vous déposez votre voiture dans notre showroom. Nous la préparons, la photographions et la présentons aux acheteurs.' },
-  { key: 'paiement', title: 'Paiement sécurisé', media: { img: '/media/bureaux' },
+  { key: 'paiement', title: 'Paiement sécurisé', media: { img: '/media/bureaux' }, page: '/media/mustang-volant',
     text: 'Les fonds transitent par un compte séquestre. Le vendeur est payé, l’acheteur est protégé : aucun risque de fraude.' },
-  { key: 'livraison', title: 'Livraison', media: { video: '/loops/golf' },
+  { key: 'livraison', title: 'Livraison', media: { video: '/loops/golf' }, page: '/media/marco-polo-route',
     text: 'Vous achetez à distance ? Nous livrons votre voiture partout en France, sans que vous ayez à vous déplacer.' },
-  { key: 'garantie', title: 'Garantie mécanique', media: { video: '/loops/moteur' },
+  { key: 'garantie', title: 'Garantie mécanique', media: { video: '/loops/moteur' }, page: '/media/defender-roue',
     text: 'Chaque véhicule vendu est couvert par une garantie mécanique de 3 à 48 mois, selon vos besoins.' },
-  { key: 'financement', title: 'Financement', media: { img: '/media/rs6-phare' },
+  { key: 'financement', title: 'Financement', media: { img: '/media/rs6-phare' }, page: '/media/mustang-sieges',
     text: 'Crédit auto classique, LOA ou LLD : nous montons votre financement avec nos partenaires.' },
-  { key: 'carte-grise', title: 'Carte grise', media: { img: '/media/slk' },
+  { key: 'carte-grise', title: 'Carte grise', media: { img: '/media/slk' }, page: '/media/defender-interieur',
     text: 'Habilités par la préfecture, nous faisons l’immatriculation sur place. Vous repartez avec votre voiture, l’esprit léger.' },
 ];
 

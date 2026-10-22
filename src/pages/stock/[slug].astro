@@ -62,9 +62,9 @@ const desc = `${name} ${v.version} ${v.annee}, ${fmt(v.km)} km, ${v.energie.toLo
   </section>
 
   <section class="section veh__details">
-    {v.bref && <p class="veh__lead js-reveal">{v.bref}</p>}
+    {v.bref && <p class="veh__lead">{v.bref}</p>}
     <div class="veh__cols">
-      <div class="prose js-reveal">
+      <div class="prose">
         <h2>Description</h2>
         {v.description.filter((l) => l !== v.bref).map((l) => <p>{l}</p>)}
       </div>
