@@ -1,12 +1,12 @@
 // Coordonnées uniques de Next Drive (sources : fiche Google, ancien site, registre des entreprises).
-// À confirmer avec le client : téléphone, e-mail et horaires étaient contradictoires d'une source à l'autre.
+// Téléphone confirmé par le client le 2026-10-22 (06 82 71 77 39). À confirmer encore : e-mail et horaires.
 export const site = {
   name: 'Next Drive',
   legal: 'JT NEXT DRIVE SAS',
   tagline: 'Voitures d’occasion',
   url: 'https://next-drive.fr',
-  phone: '04 80 79 93 65',
-  phoneHref: 'tel:+33480799365',
+  phone: '06 82 71 77 39',
+  phoneHref: 'tel:+33682717739',
   email: 'savoie@next-drive.fr',
   street: '106 chemin de la Girondière, Bât. 2',
   postal: '73520',
